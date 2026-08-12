@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { getRecentEntries, getMonthlySummary, upsertEntry, deleteEntry } from '../db/database';
+import { getRecentEntries, getMonthlySummary, upsertEntry, deleteEntry, updateEntry } from '../db/database';
 import { Entry } from '../types/entry';
 
 interface EntryStore {
@@ -9,6 +9,7 @@ interface EntryStore {
     saveEntry: (money: number, tip: number) => void;
     removeEntry: (id: number) => void;
     refresh: () => void;
+    editEntry: (id: number, money: number, tip: number) => void;
 }
 
 export const useEntryStore = create<EntryStore>((set, get) => ({
@@ -16,14 +17,14 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
     monthTotal: 0,
     monthTips: 0,
 
-    removeEntry: (id) => {
-        deleteEntry(id);
-        get().refresh();
-    },
-
     saveEntry: (money, tip) => {
         const today = new Date().toISOString().split('T')[0];
         upsertEntry(today, money, tip);
+        get().refresh();
+    },
+
+    removeEntry: (id) => {
+        deleteEntry(id);
         get().refresh();
     },
 
@@ -36,5 +37,10 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
             monthTotal: (summary?.totalMoney ?? 0),
             monthTips: summary?.totalTip ?? 0,
         });
+    },
+
+    editEntry: (id, money, tip) => {
+        updateEntry(id, money, tip);
+        get().refresh();
     },
 }));

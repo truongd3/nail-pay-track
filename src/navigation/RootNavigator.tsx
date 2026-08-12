@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import TodayScreen from '../screens/TodayScreen';
-import HistoryScreen from '../screens/HistoryScreen';
+import HistoryStackNavigator from './HistoryStackNavigator';
 import StatsScreen from '../screens/StatsScreen';
 
 const Tab = createBottomTabNavigator();
@@ -35,7 +35,7 @@ export default function RootNavigator() {
                     },
                 })}>
                 <Tab.Screen name="Today" component={TodayScreen} />
-                <Tab.Screen name="History" component={HistoryScreen} />
+                <Tab.Screen name="History" component={HistoryStackNavigator} />
                 <Tab.Screen name="Stats" component={StatsScreen} />
             </Tab.Navigator>
         </NavigationContainer>
