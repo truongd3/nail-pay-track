@@ -1,5 +1,6 @@
 import AmountCard from '../components/AmountCard';
 import Avatar from '../components/Avatar';
+import Button from '../components/Button';
 import CurrencyInput from '../components/CurrencyInput';
 import DateCard from '../components/DateCard';
 import ScreenContainer from '../components/ScreenContainer';
@@ -56,9 +57,7 @@ export default function TodayScreen() {
                 <CurrencyInput label="TODAY'S MONEY" value={money} onChangeText={setMoney} />
                 <CurrencyInput label="TODAY'S TIP" value={tip} onChangeText={setTip} />
 
-                <Pressable style={styles.saveButton} onPress={handleSave}>
-                    <Text style={styles.saveButtonText}>Save Entry</Text>
-                </Pressable>
+                <Button label="Save Entry" onPress={handleSave} />
 
                 <StatRow>
                     <StatCard label="THIS MONTH" value={`$${monthTotal.toFixed(2)}`} />

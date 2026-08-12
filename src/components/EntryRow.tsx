@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { View, Pressable } from 'react-native';
 import AmountCard from './AmountCard';
 import DateBadge from './DateBadge';
 import DateCard from './DateCard';
@@ -9,6 +9,7 @@ import { Entry } from '../types/entry';
 interface EntryRowProps {
     entry: Entry;
     onDelete?: (id: number) => void;
+    onPress?: (entry: Entry) => void;
 }
 
 function formatDayLabel(dateStr: string) {
@@ -24,17 +25,21 @@ function formatDayLabel(dateStr: string) {
     return { weekday, dayAbbrev, dayNumber, monthDay };
 }
 
-export default function EntryRow({ entry, onDelete }: EntryRowProps) {
+export default function EntryRow({ entry, onDelete, onPress }: EntryRowProps) {
     const { weekday, dayAbbrev, dayNumber, monthDay } = formatDayLabel(entry.date);
 
     return (
-        <View style={styles.row}>
+        <Pressable
+            style={styles.row}
+            onPress={() => onPress?.(entry)}
+            disabled={!onPress}
+        >
             <DateBadge dayAbbrev={dayAbbrev} dayNumber={dayNumber} />
             <View style={styles.middle}>
                 <DateCard weekday={weekday} monthDay={monthDay} />
             </View>
             <AmountCard money={entry.money} tip={entry.tip} />
             {onDelete && <DeleteButton onPress={() => onDelete(entry.id)} />}
-        </View>
+        </Pressable>
     );
 }

@@ -68,3 +68,10 @@ export function getMonthlyStats(): MonthlyStat[] {
         ORDER BY month DESC
     `);
 }
+
+export function updateEntry(id: number, money: number, tip: number) {
+    db.runSync(
+        `UPDATE entries SET money = ?, tip = ? WHERE id = ?`,
+        [money, tip, id]
+    );
+}
