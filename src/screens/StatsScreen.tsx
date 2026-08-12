@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import Avatar from '../components/Avatar';
+import EmptyState from '../components/EmptyState';
 import ScreenContainer from '../components/ScreenContainer';
 import ScreenHeader from '../components/ScreenHeader';
 import StatCard from '../components/StatCard';
@@ -54,7 +55,7 @@ export default function StatsScreen() {
 
             <Text style={styles.sectionTitle}>Tip Breakdown</Text>
 
-            <StatsTableHeader />
+            {monthlyStats.length > 0 && <StatsTableHeader />}
 
             <FlatList
                 data={monthlyStats}
@@ -69,6 +70,13 @@ export default function StatsScreen() {
                 )}
                 contentContainerStyle={styles.listContent}
                 showsVerticalScrollIndicator={false}
+                ListEmptyComponent={
+                    <EmptyState
+                        icon="stats-chart-outline"
+                        title="No stats yet"
+                        subtitle="Once you log a few days, your monthly tip breakdown will show up here"
+                    />
+                }
             />
         </ScreenContainer>
     );
