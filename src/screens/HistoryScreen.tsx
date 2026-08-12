@@ -4,6 +4,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { HistoryStackParamList } from '../navigation/HistoryStackNavigator';
 import Avatar from '../components/Avatar';
+import EmptyState from '../components/EmptyState';
 import EntryRow from '../components/EntryRow';
 import ScreenContainer from '../components/ScreenContainer';
 import ScreenHeader from '../components/ScreenHeader';
@@ -63,6 +64,13 @@ export default function HistoryScreen() {
                 )}
                 contentContainerStyle={styles.listContent}
                 showsVerticalScrollIndicator={false}
+                ListEmptyComponent={
+                    <EmptyState
+                        icon="time-outline"
+                        title="No entries yet"
+                        subtitle="Log your first day on the Today tab"
+                    />
+                }
             />
         </ScreenContainer>
     );
