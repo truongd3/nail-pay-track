@@ -14,4 +14,9 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#555',
   },
+  avatarImage: {
+  width: 40,
+  height: 40,
+  borderRadius: 20,
+},
 });

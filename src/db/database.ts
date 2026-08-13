@@ -1,5 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import { Entry } from '../types/entry';
+import { Profile } from '../types/profile';
 
 const db = SQLite.openDatabaseSync('nailpay.db');
 
@@ -13,6 +14,42 @@ export function initDatabase() {
             createdAt TEXT NOT NULL
         );
     `);
+
+    db.execSync(`
+        CREATE TABLE IF NOT EXISTS profile (
+            id INTEGER PRIMARY KEY CHECK (id = 1),
+            name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            phone TEXT NOT NULL,
+            country TEXT NOT NULL,
+            region TEXT NOT NULL,
+            avatarUri TEXT
+        );
+    `);
+}
+
+export function getProfile(): Profile | null {
+    const row = db.getFirstSync<any>(`SELECT * FROM profile WHERE id = 1`);
+    if (!row) return null;
+    return {
+        name: row.name,
+        email: row.email,
+        phone: row.phone,
+        country: row.country,
+        region: row.region,
+        avatarUri: row.avatarUri,
+    };
+}
+
+export function saveProfile(profile: Profile) {
+  db.runSync(
+    `INSERT INTO profile (id, name, email, phone, country, region, avatarUri)
+     VALUES (1, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT(id) DO UPDATE SET
+       name=excluded.name, email=excluded.email, phone=excluded.phone,
+       country=excluded.country, region=excluded.region, avatarUri=excluded.avatarUri`,
+    [profile.name, profile.email, profile.phone, profile.country, profile.region, profile.avatarUri]
+  );
 }
 
 export function upsertEntry(date: string, money: number, tip: number) {
@@ -44,6 +81,10 @@ export function getMonthlySummary(yearMonth: string) {
 
 export function clearAllEntries() {
     db.execSync(`DELETE FROM entries;`);
+}
+
+export function clearProfile() {
+  db.execSync(`DELETE FROM profile;`);
 }
 
 export function deleteEntry(id: number) {

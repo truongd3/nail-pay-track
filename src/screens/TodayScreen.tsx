@@ -12,6 +12,8 @@ import { useState, useCallback } from 'react';
 import {View, Text, Pressable, ScrollView} from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useEntryStore } from '../store/useEntryStore';
+import { useProfileStore } from '../store/useProfileStore';
+import { getInitials } from '../utils/initials';
 
 function formatDayLabel(dateStr: string) {
     const date = new Date(dateStr + 'T00:00:00');
@@ -28,6 +30,7 @@ export default function TodayScreen() {
     const { recentEntries, monthTotal, monthTips, saveEntry, refresh } = useEntryStore();
     const [money, setMoney] = useState('');
     const [tip, setTip] = useState('');
+    const profile = useProfileStore((state) => state.profile);
 
     useFocusEffect(
         useCallback(() => {
@@ -51,7 +54,7 @@ export default function TodayScreen() {
             <ScrollView contentContainerStyle={styles.content}>
                 <View style={styles.headerRow}>
                     <ScreenHeader label={monthLabel} title="Daily Entry" />
-                    <Avatar initials="YN" />
+                    <Avatar initials={profile ? getInitials(profile.name) : ''} imageUri={profile?.avatarUri} />
                 </View>
 
                 <CurrencyInput label="TODAY'S MONEY" value={money} onChangeText={setMoney} />

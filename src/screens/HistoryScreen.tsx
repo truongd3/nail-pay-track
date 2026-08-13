@@ -11,6 +11,8 @@ import ScreenHeader from '../components/ScreenHeader';
 import { useEntryStore } from '../store/useEntryStore';
 import { getAllEntries } from '../db/database';
 import { Entry } from '../types/entry';
+import { useProfileStore } from '../store/useProfileStore';
+import { getInitials } from '../utils/initials';
 import { styles } from '../styles/HistoryScreen.styles';
 
 type HistoryNavProp = NativeStackNavigationProp<HistoryStackParamList, 'HistoryList'>;
@@ -19,6 +21,7 @@ export default function HistoryScreen() {
     const navigation = useNavigation<HistoryNavProp>();
     const [entries, setEntries] = useState<Entry[]>([]);
     const removeEntry = useEntryStore((state) => state.removeEntry);
+    const profile = useProfileStore((state) => state.profile);
 
     const loadEntries = () => {
         setEntries(getAllEntries());
@@ -51,7 +54,7 @@ export default function HistoryScreen() {
         <ScreenContainer>
             <View style={styles.headerRow}>
                 <ScreenHeader label={monthLabel} title="History" />
-                <Avatar initials="YN" />
+                <Avatar initials={profile ? getInitials(profile.name) : ''} imageUri={profile?.avatarUri} />
             </View>
 
             <ScreenHeader label="ALL TIME" title="History" />
