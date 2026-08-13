@@ -10,6 +10,8 @@ import StatRow from '../components/StatRow';
 import StatsTableHeader from '../components/StatsTableHeader';
 import StatsTableRow from '../components/StatsTableRow';
 import { getMonthlyStats, MonthlyStat } from '../db/database';
+import { useProfileStore } from '../store/useProfileStore';
+import { getInitials } from '../utils/initials';
 import { styles } from '../styles/StatsScreen.styles';
 
 function formatMonthLabel(monthKey: string) {
@@ -20,6 +22,7 @@ function formatMonthLabel(monthKey: string) {
 
 export default function StatsScreen() {
     const [monthlyStats, setMonthlyStats] = useState<MonthlyStat[]>([]);
+    const profile = useProfileStore((state) => state.profile);
 
     const loadStats = () => {
         setMonthlyStats(getMonthlyStats());
@@ -43,7 +46,7 @@ export default function StatsScreen() {
         <ScreenContainer>
             <View style={styles.headerRow}>
                 <ScreenHeader label={monthLabel} title="Stats" />
-                <Avatar initials="YN" />
+                <Avatar initials={profile ? getInitials(profile.name) : ''} imageUri={profile?.avatarUri} />
             </View>
 
             <ScreenHeader label="OVERVIEW" title="Monthly Stats" />

@@ -3,11 +3,15 @@ import { styles } from '../styles/ScreenContainer.styles';
 
 interface ScreenContainerProps {
     children: React.ReactNode;
+    edges?: ('top' | 'bottom' | 'left' | 'right')[];
 }
 
-export default function ScreenContainer({ children }: ScreenContainerProps) {
+export default function ScreenContainer({
+    children,
+    edges = ['top'],
+}: ScreenContainerProps) {
     return (
-        <SafeAreaView style={styles.container} edges={['top']}>
+        <SafeAreaView style={styles.container} edges={edges}>
             {children}
         </SafeAreaView>
     );
