@@ -6,9 +6,11 @@ import { initDatabase, clearAllEntries, clearProfile } from './src/db/database';
 import { useProfileStore } from './src/store/useProfileStore';
 import RootNavigator from './src/navigation/RootNavigator';
 import OnboardingScreen from './src/screens/OnboardingScreen';
+import WelcomeScreen from './src/screens/WelcomeScreen';
 
 export default function App() {
     const [dbReady, setDbReady] = useState(false);
+    const [showWelcome, setShowWelcome] = useState(true);
     const { profile, isLoaded, loadProfile } = useProfileStore();
 
     useEffect(() => {
@@ -32,9 +34,15 @@ export default function App() {
         );
     }
 
+    const renderScreen = () => {
+        if (!profile && showWelcome) return <WelcomeScreen onGetStarted={() => setShowWelcome(false)} />;
+        if (!profile) return <OnboardingScreen />;
+        return <RootNavigator />;
+    };
+
     return (
         <SafeAreaProvider>
-            {profile ? <RootNavigator /> : <OnboardingScreen />}
+            {renderScreen()}
             <StatusBar style="dark" />
         </SafeAreaProvider>
     );
