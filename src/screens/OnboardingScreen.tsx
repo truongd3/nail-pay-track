@@ -12,6 +12,7 @@ import { US_STATES, CA_PROVINCES } from '../data/regions';
 import { useProfileStore } from '../store/useProfileStore';
 import { Country } from '../types/profile';
 import { styles } from '../styles/OnboardingScreen.styles';
+import { getInitials } from '../utils/initials';
 
 const TOTAL_STEPS = 4;
 
@@ -125,13 +126,20 @@ export default function OnboardingScreen() {
                         {step === 3 && (
                             <>
                                 <Text style={styles.stepTitle}>Add a profile photo</Text>
-                                <Text style={styles.stepSubtitle}>Optional — you can always add this later.</Text>
-                                <Pressable style={styles.avatarPicker} onPress={handlePickAvatar}>
+                                <Text style={styles.stepSubtitle}>Optional — you can always add it later.</Text>
+
+                                <View style={styles.avatarPreviewWrap}>
                                     {avatarUri ? (
-                                        <Image source={{ uri: avatarUri }} style={styles.avatarPreview} />
+                                        <Image source={{ uri: avatarUri }} style={styles.avatarImage} />
                                     ) : (
-                                        <Ionicons name="camera-outline" size={28} color="#9a9a9a" />
+                                        <View style={styles.avatarCircle}>
+                                        <Text style={styles.avatarInitials}>{getInitials(name)}</Text>
+                                        </View>
                                     )}
+                                </View>
+
+                                <Pressable style={styles.uploadButton} onPress={handlePickAvatar}>
+                                    <Text style={styles.uploadButtonText}>Upload photo</Text>
                                 </Pressable>
                             </>
                         )}

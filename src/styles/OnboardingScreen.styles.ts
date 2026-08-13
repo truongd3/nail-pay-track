@@ -16,20 +16,40 @@ export const styles = StyleSheet.create({
     color: '#9a9a9a',
     marginBottom: 24,
   },
-  avatarPicker: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: '#efece3',
+  avatarPreviewWrap: {
+  alignItems: 'center',
+  marginTop: 40,
+  marginBottom: 20,
+},
+  avatarCircle: {
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    backgroundColor: '#e3ecE6',
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'center',
-    marginTop: 20,
-    overflow: 'hidden',
   },
-  avatarPreview: {
-    width: 100,
-    height: 100,
+  avatarInitials: {
+    fontSize: 36,
+    fontWeight: '700',
+    color: '#5a9c6f',
+  },
+  avatarImage: {
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+  },
+  uploadButton: {
+    alignSelf: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 24,
+    paddingVertical: 14,
+    paddingHorizontal: 28,
+  },
+  uploadButtonText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#1a1a2e',
   },
   buttonRow: {
     marginTop: 'auto',
