@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { View, Text, Alert, Pressable, Image, ScrollView, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Alert, Pressable, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system/legacy';
 import { Ionicons } from '@expo/vector-icons';
-import ScreenContainer from '../components/ScreenContainer';
+import KeyboardFormScreen from '../components/KeyboardFormScreen';
 import LabeledInput from '../components/LabeledInput';
 import OptionList from '../components/OptionList';
 import ProgressDots from '../components/ProgressDots';
@@ -57,7 +57,7 @@ export default function OnboardingScreen() {
             return;
         }
         const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            mediaTypes: ['images'],
             allowsEditing: true,
             aspect: [1, 1],
             quality: 0.7,
@@ -74,86 +74,80 @@ export default function OnboardingScreen() {
     };
 
     return (
-        <ScreenContainer edges={['top', 'bottom']}>
-            <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                    <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-                        <ProgressDots total={TOTAL_STEPS} current={step} />
+        <KeyboardFormScreen contentContainerStyle={styles.content}>
+            <ProgressDots total={TOTAL_STEPS} current={step} />
 
-                        {step === 0 && (
-                            <>
-                                <Text style={styles.stepTitle}>Let's get to know you</Text>
-                                <Text style={styles.stepSubtitle}>We use this to personalize your earnings profile.</Text>
-                                <LabeledInput label="NAME" value={name} onChangeText={setName} placeholder="Jane Nguyen" />
-                                <LabeledInput
-                                    label="EMAIL" value={email}
-                                    onChangeText={setEmail}
-                                    placeholder="jane@email.com" keyboardType="email-address"
-                                    autoCapitalize="none"
-                                />
-                                <LabeledInput
-                                    label="PHONE" value={phone}
-                                    onChangeText={setPhone}
-                                    placeholder="(555) 123-4567" keyboardType="phone-pad"
-                                />
-                            </>
+            {step === 0 && (
+                <>
+                    <Text style={styles.stepTitle}>Let's get to know you</Text>
+                    <Text style={styles.stepSubtitle}>We use this to personalize your earnings profile.</Text>
+                    <LabeledInput label="NAME" value={name} onChangeText={setName} placeholder="Jane Nguyen" />
+                    <LabeledInput
+                        label="EMAIL" value={email}
+                        onChangeText={setEmail}
+                        placeholder="jane@email.com" keyboardType="email-address"
+                        autoCapitalize="none"
+                    />
+                    <LabeledInput
+                        label="PHONE" value={phone}
+                        onChangeText={setPhone}
+                        placeholder="(555) 123-4567" keyboardType="phone-pad"
+                    />
+                </>
+            )}
+
+            {step === 1 && (
+                <>
+                    <Text style={styles.stepTitle}>Where are you based?</Text>
+                    <OptionList 
+                        options={[
+                            { label: 'United States', value: 'US' },
+                            { label: 'Canada', value: 'CA' },
+                        ]}
+                        selectedValue={country}
+                        onSelect={(value) => {
+                            setCountry(value as Country);
+                            setRegion(null); // reset region if country changes
+                        }}
+                    />
+                </>
+            )}
+
+            {step === 2 && (
+                <>
+                    <Text style={styles.stepTitle}>{country === 'CA' ? 'Which province?' : 'Which state?'}</Text>
+                    <OptionList options={regionOptions} selectedValue={region} onSelect={setRegion} />
+                </>
+            )}
+
+            {step === 3 && (
+                <>
+                    <Text style={styles.stepTitle}>Add a profile photo</Text>
+                    <Text style={styles.stepSubtitle}>Optional — you can always add it later.</Text>
+
+                    <View style={styles.avatarPreviewWrap}>
+                        {avatarUri ? (
+                            <Image source={{ uri: avatarUri }} style={styles.avatarImage} />
+                        ) : (
+                            <View style={styles.avatarCircle}>
+                                <Text style={styles.avatarInitials}>{getInitials(name)}</Text>
+                            </View>
                         )}
+                    </View>
 
-                        {step === 1 && (
-                            <>
-                                <Text style={styles.stepTitle}>Where are you based?</Text>
-                                <OptionList 
-                                    options={[
-                                        { label: 'United States', value: 'US' },
-                                        { label: 'Canada', value: 'CA' },
-                                    ]}
-                                    selectedValue={country}
-                                    onSelect={(value) => {
-                                        setCountry(value as Country);
-                                        setRegion(null); // reset region if country changes
-                                    }}
-                                />
-                            </>
-                        )}
+                    <Pressable style={styles.uploadButton} onPress={handlePickAvatar}>
+                        <Text style={styles.uploadButtonText}>Upload photo</Text>
+                    </Pressable>
+                </>
+            )}
 
-                        {step === 2 && (
-                            <>
-                                <Text style={styles.stepTitle}>{country === 'CA' ? 'Which province?' : 'Which state?'}</Text>
-                                <OptionList options={regionOptions} selectedValue={region} onSelect={setRegion} />
-                            </>
-                        )}
-
-                        {step === 3 && (
-                            <>
-                                <Text style={styles.stepTitle}>Add a profile photo</Text>
-                                <Text style={styles.stepSubtitle}>Optional — you can always add it later.</Text>
-
-                                <View style={styles.avatarPreviewWrap}>
-                                    {avatarUri ? (
-                                        <Image source={{ uri: avatarUri }} style={styles.avatarImage} />
-                                    ) : (
-                                        <View style={styles.avatarCircle}>
-                                        <Text style={styles.avatarInitials}>{getInitials(name)}</Text>
-                                        </View>
-                                    )}
-                                </View>
-
-                                <Pressable style={styles.uploadButton} onPress={handlePickAvatar}>
-                                    <Text style={styles.uploadButtonText}>Upload photo</Text>
-                                </Pressable>
-                            </>
-                        )}
-
-                        <View style={styles.buttonRow}>
-                            {step > 0 && (<Button label="Back" onPress={handleBack} variant="secondary" />)}
-                            <Button
-                                label={step === TOTAL_STEPS - 1 ? 'Get Started' : 'Continue'}
-                                onPress={handleNext} disabled={!canGoNext()}
-                            />
-                        </View>
-                    </ScrollView>
-                </TouchableWithoutFeedback>
-            </KeyboardAvoidingView>
-        </ScreenContainer>
+            <View style={styles.buttonRow}>
+                {step > 0 && (<Button label="Back" onPress={handleBack} variant="secondary" />)}
+                <Button
+                    label={step === TOTAL_STEPS - 1 ? 'Get Started' : 'Continue'}
+                    onPress={handleNext} disabled={!canGoNext()}
+                />
+            </View>
+        </KeyboardFormScreen>
     );
 }
