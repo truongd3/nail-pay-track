@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { getRecentEntries, getMonthlySummary, upsertEntry, deleteEntry, updateEntry } from '../db/database';
 import { Entry } from '../types/entry';
+import { getTodayLocal, getCurrentMonthLocal } from '../utils/date';
 
 interface EntryStore {
     recentEntries: Entry[];
@@ -18,7 +19,7 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
     monthTips: 0,
 
     saveEntry: (money, tip) => {
-        const today = new Date().toISOString().split('T')[0];
+        const today = getTodayLocal();
         upsertEntry(today, money, tip);
         get().refresh();
     },
@@ -30,7 +31,7 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
 
     refresh: () => {
         const entries = getRecentEntries(20);
-        const currentMonth = new Date().toISOString().slice(0, 7);
+        const currentMonth = getCurrentMonthLocal();
         const summary = getMonthlySummary(currentMonth);
         set({
             recentEntries: entries,
