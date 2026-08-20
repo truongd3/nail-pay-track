@@ -1,3 +1,7 @@
+import { useState, useCallback } from 'react';
+import { View, Text, Pressable, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import AmountCard from '../components/AmountCard';
 import Avatar from '../components/Avatar';
 import Button from '../components/Button';
@@ -8,9 +12,6 @@ import ScreenHeader from '../components/ScreenHeader';
 import StatCard from '../components/StatCard';
 import StatRow from '../components/StatRow';
 import { styles } from '../styles/TodayScreen.styles';
-import { useState, useCallback } from 'react';
-import {View, Text, Pressable, ScrollView} from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import { useEntryStore } from '../store/useEntryStore';
 import { useProfileStore } from '../store/useProfileStore';
 import { getInitials } from '../utils/initials';
@@ -31,6 +32,7 @@ export default function TodayScreen() {
     const [money, setMoney] = useState('');
     const [tip, setTip] = useState('');
     const profile = useProfileStore((state) => state.profile);
+    const navigation = useNavigation<any>();
 
     useFocusEffect(
         useCallback(() => {
@@ -54,7 +56,9 @@ export default function TodayScreen() {
             <ScrollView contentContainerStyle={styles.content}>
                 <View style={styles.headerRow}>
                     <ScreenHeader label={monthLabel} title="Daily Entry" />
-                    <Avatar initials={profile ? getInitials(profile.name) : ''} imageUri={profile?.avatarUri} />
+                    <Pressable onPress={() => navigation.navigate('AccountMenu')}>
+                        <Avatar initials={profile ? getInitials(profile.name) : ''} imageUri={profile?.avatarUri} />
+                    </Pressable>
                 </View>
 
                 <CurrencyInput label="TODAY'S MONEY" value={money} onChangeText={setMoney} />

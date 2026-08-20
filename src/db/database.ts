@@ -1,6 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import { Entry } from '../types/entry';
 import { Profile } from '../types/profile';
+import { Salon } from '../types/salon';
 
 const db = SQLite.openDatabaseSync('nailpay.db');
 
@@ -24,6 +25,15 @@ export function initDatabase() {
             country TEXT NOT NULL,
             region TEXT NOT NULL,
             avatarUri TEXT
+        );
+    `);
+
+    db.execSync(`
+        CREATE TABLE IF NOT EXISTS salon (
+            id INTEGER PRIMARY KEY CHECK (id = 1),
+            name TEXT,
+            address TEXT,
+            splitPercent REAL
         );
     `);
 }
@@ -114,5 +124,21 @@ export function updateEntry(id: number, money: number, tip: number) {
     db.runSync(
         `UPDATE entries SET money = ?, tip = ? WHERE id = ?`,
         [money, tip, id]
+    );
+}
+
+export function getSalon(): Salon | null {
+    const row = db.getFirstSync<any>(`SELECT * FROM salon WHERE id = 1`);
+    if (!row) return null;
+    return { name: row.name, address: row.address, splitPercent: row.splitPercent };
+}
+
+export function saveSalon(salon: Salon) {
+    db.runSync(
+        `INSERT INTO salon (id, name, address, splitPercent)
+         VALUES (1, ?, ?, ?)
+         ON CONFLICT(id) DO UPDATE SET
+            name=excluded.name, address=excluded.address, splitPercent=excluded.splitPercent`,
+        [salon.name, salon.address, salon.splitPercent]
     );
 }
