@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, Pressable } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Avatar from '../components/Avatar';
 import EmptyState from '../components/EmptyState';
 import ScreenContainer from '../components/ScreenContainer';
@@ -23,6 +24,7 @@ function formatMonthLabel(monthKey: string) {
 export default function StatsScreen() {
     const [monthlyStats, setMonthlyStats] = useState<MonthlyStat[]>([]);
     const profile = useProfileStore((state) => state.profile);
+    const navigation = useNavigation<any>();
 
     const loadStats = () => {
         setMonthlyStats(getMonthlyStats());
@@ -46,7 +48,9 @@ export default function StatsScreen() {
         <ScreenContainer>
             <View style={styles.headerRow}>
                 <ScreenHeader label={monthLabel} title="Stats" />
-                <Avatar initials={profile ? getInitials(profile.name) : ''} imageUri={profile?.avatarUri} />
+                <Pressable onPress={() => navigation.navigate('AccountMenu')}>
+                    <Avatar initials={profile ? getInitials(profile.name) : ''} imageUri={profile?.avatarUri} />
+                </Pressable>
             </View>
 
             <ScreenHeader label="OVERVIEW" title="Monthly Stats" />

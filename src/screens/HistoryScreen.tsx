@@ -1,8 +1,9 @@
 import { useState, useCallback } from 'react';
-import { View, FlatList, Alert } from 'react-native';
+import { View, FlatList, Alert, Pressable } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { HistoryStackParamList } from '../navigation/HistoryStackNavigator';
+import type { CompositeNavigationProp } from '@react-navigation/native';
+import type { HistoryStackParamList, RootStackParamList } from '../navigation/types';
 import Avatar from '../components/Avatar';
 import EmptyState from '../components/EmptyState';
 import EntryRow from '../components/EntryRow';
@@ -15,7 +16,10 @@ import { useProfileStore } from '../store/useProfileStore';
 import { getInitials } from '../utils/initials';
 import { styles } from '../styles/HistoryScreen.styles';
 
-type HistoryNavProp = NativeStackNavigationProp<HistoryStackParamList, 'HistoryList'>;
+type HistoryNavProp = CompositeNavigationProp<
+  NativeStackNavigationProp<HistoryStackParamList, 'HistoryList'>,
+  NativeStackNavigationProp<RootStackParamList>
+>;
 
 export default function HistoryScreen() {
     const navigation = useNavigation<HistoryNavProp>();
@@ -54,7 +58,9 @@ export default function HistoryScreen() {
         <ScreenContainer>
             <View style={styles.headerRow}>
                 <ScreenHeader label={monthLabel} title="History" />
-                <Avatar initials={profile ? getInitials(profile.name) : ''} imageUri={profile?.avatarUri} />
+                <Pressable onPress={() => navigation.navigate('AccountMenu')}>
+                    <Avatar initials={profile ? getInitials(profile.name) : ''} imageUri={profile?.avatarUri} />
+                </Pressable>
             </View>
 
             <ScreenHeader label="ALL TIME" title="History" />

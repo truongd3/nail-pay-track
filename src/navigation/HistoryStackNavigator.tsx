@@ -1,12 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HistoryScreen from '../screens/HistoryScreen';
 import EditEntryScreen from '../screens/EditEntryScreen';
-import { Entry } from '../types/entry';
-
-export type HistoryStackParamList = {
-    HistoryList: undefined;
-    EditEntry: { entry: Entry };
-};
+import type { HistoryStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<HistoryStackParamList>();
 
