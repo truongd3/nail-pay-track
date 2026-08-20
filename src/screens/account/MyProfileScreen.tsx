@@ -29,9 +29,10 @@ export default function MyProfileScreen() {
     const [name, setName] = useState(profile?.name ?? '');
     const [email, setEmail] = useState(profile?.email ?? '');
     const [phone, setPhone] = useState(profile?.phone ?? '');
-    const [country] = useState<Country>(profile?.country ?? 'US');
+    const [country, setCountry] = useState<Country>(profile?.country ?? 'US');
     const [region, setRegion] = useState(profile?.region ?? '');
     const [avatarUri, setAvatarUri] = useState<string | null>(profile?.avatarUri ?? null);
+    const [showCountryPicker, setShowCountryPicker] = useState(false);
     const [showRegionPicker, setShowRegionPicker] = useState(false);
 
     const regionOptions = country === 'CA' ? CA_PROVINCES : US_STATES;
@@ -54,14 +55,32 @@ export default function MyProfileScreen() {
         navigation.goBack();
     };
 
+    const handleCountrySelect = (value: string) => {
+        setCountry(value as Country);
+        setRegion(''); // reset, since old region won't be valid in new country
+        setShowCountryPicker(false);
+    };
+
+    if (showCountryPicker) {
+        return (
+            <ScreenContainer edges={['top', 'bottom']}>
+                <BackHeader title="Country" onBack={() => setShowCountryPicker(false)} />
+                <OptionList
+                    options={[
+                        { label: 'United States', value: 'US' },
+                        { label: 'Canada', value: 'CA' },
+                    ]}
+                    selectedValue={country} onSelect={handleCountrySelect}
+                />
+            </ScreenContainer>
+        );
+    }
+
     if (showRegionPicker) {
         return (
             <ScreenContainer edges={['top', 'bottom']}>
                 <BackHeader title={country === 'CA' ? 'Province' : 'State'} onBack={() => setShowRegionPicker(false)}/>
-                <OptionList
-                    options={regionOptions}
-                    selectedValue={region}
-                    onSelect={(value) => { setRegion(value); setShowRegionPicker(false); }}
+                <OptionList options={regionOptions} selectedValue={region} onSelect={(value) => { setRegion(value); setShowRegionPicker(false); }}
                 />
             </ScreenContainer>
         );
@@ -91,6 +110,14 @@ export default function MyProfileScreen() {
                         <LabeledInput label="EMAIL" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
                         <LabeledInput label="PHONE" value={phone} onChangeText={setPhone} keyboardType="phone-pad" />
 
+                        <Pressable style={styles.regionSelector} onPress={() => setShowCountryPicker(true)}>
+                            <Text style={styles.regionLabel}>COUNTRY</Text>
+                            <View style={styles.regionValueRow}>
+                                <Text style={styles.regionValue}>{country === 'CA' ? 'Canada' : 'United States'}</Text>
+                                <Ionicons name="chevron-forward" size={18} color="#9a9a9a" />
+                            </View>
+                        </Pressable>
+                        
                         <Pressable style={styles.regionSelector} onPress={() => setShowRegionPicker(true)}>
                             <Text style={styles.regionLabel}>{country === 'CA' ? 'PROVINCE' : 'STATE'}</Text>
                             <View style={styles.regionValueRow}>
