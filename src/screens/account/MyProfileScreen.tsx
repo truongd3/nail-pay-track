@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { View, Text, Pressable, Image, ScrollView, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Pressable, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system/legacy';
 import BackHeader from '../../components/BackHeader';
 import Button from '../../components/Button';
-import ScreenContainer from '../../components/ScreenContainer';
+import KeyboardFormScreen from '../../components/KeyboardFormScreen';
 import LabeledInput from '../../components/LabeledInput';
+import ScreenContainer from '../../components/ScreenContainer';
 import OptionList from '../../components/OptionList';
 import { useProfileStore } from '../../store/useProfileStore';
 import { getInitials } from '../../utils/initials';
@@ -30,7 +31,7 @@ export default function MyProfileScreen() {
     const [email, setEmail] = useState(profile?.email ?? '');
     const [phone, setPhone] = useState(profile?.phone ?? '');
     const [country, setCountry] = useState<Country>(profile?.country ?? 'US');
-    const [region, setRegion] = useState(profile?.region ?? '');
+    const [region, setRegion] = useState<string | null>(profile?.region ?? null);
     const [avatarUri, setAvatarUri] = useState<string | null>(profile?.avatarUri ?? null);
     const [showCountryPicker, setShowCountryPicker] = useState(false);
     const [showRegionPicker, setShowRegionPicker] = useState(false);
@@ -51,13 +52,14 @@ export default function MyProfileScreen() {
     };
 
     const handleSave = () => {
+        if (!region) return;
         saveProfile({ name, email, phone, country, region, avatarUri });
         navigation.goBack();
     };
 
     const handleCountrySelect = (value: string) => {
         setCountry(value as Country);
-        setRegion(''); // reset, since old region won't be valid in new country
+        setRegion(null); // reset, since old region won't be valid in new country
         setShowCountryPicker(false);
     };
 
@@ -87,49 +89,43 @@ export default function MyProfileScreen() {
     }
 
     return (
-        <ScreenContainer edges={['top', 'bottom']}>
-            <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                    <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-                        <BackHeader title="My Profile" />
+        <KeyboardFormScreen contentContainerStyle={styles.content}>
+            <BackHeader title="My Profile" />
 
-                        <Pressable style={styles.avatarWrap} onPress={handlePickAvatar}>
-                            {avatarUri ? (
-                                <Image source={{ uri: avatarUri }} style={styles.avatarImage} />
-                            ) : (
-                                <View style={styles.avatarCircle}>
-                                    <Text style={styles.avatarInitials}>{getInitials(name)}</Text>
-                                </View>
-                            )}
-                            <View style={styles.avatarEditBadge}>
-                                <Ionicons name="camera" size={14} color="#fff" />
-                            </View>
-                        </Pressable>
+            <Pressable style={styles.avatarWrap} onPress={handlePickAvatar}>
+                {avatarUri ? (
+                    <Image source={{ uri: avatarUri }} style={styles.avatarImage} />
+                ) : (
+                    <View style={styles.avatarCircle}>
+                        <Text style={styles.avatarInitials}>{getInitials(name)}</Text>
+                    </View>
+                )}
+                <View style={styles.avatarEditBadge}>
+                    <Ionicons name="camera" size={14} color="#fff" />
+                </View>
+            </Pressable>
 
-                        <LabeledInput label="NAME" value={name} onChangeText={setName} />
-                        <LabeledInput label="EMAIL" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
-                        <LabeledInput label="PHONE" value={phone} onChangeText={setPhone} keyboardType="phone-pad" />
+            <LabeledInput label="NAME" value={name} onChangeText={setName} />
+            <LabeledInput label="EMAIL" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
+            <LabeledInput label="PHONE" value={phone} onChangeText={setPhone} keyboardType="phone-pad" />
 
-                        <Pressable style={styles.regionSelector} onPress={() => setShowCountryPicker(true)}>
-                            <Text style={styles.regionLabel}>COUNTRY</Text>
-                            <View style={styles.regionValueRow}>
-                                <Text style={styles.regionValue}>{country === 'CA' ? 'Canada' : 'United States'}</Text>
-                                <Ionicons name="chevron-forward" size={18} color="#9a9a9a" />
-                            </View>
-                        </Pressable>
-                        
-                        <Pressable style={styles.regionSelector} onPress={() => setShowRegionPicker(true)}>
-                            <Text style={styles.regionLabel}>{country === 'CA' ? 'PROVINCE' : 'STATE'}</Text>
-                            <View style={styles.regionValueRow}>
-                                <Text style={styles.regionValue}>{regionLabel}</Text>
-                                <Ionicons name="chevron-forward" size={18} color="#9a9a9a" />
-                            </View>
-                        </Pressable>
+            <Pressable style={styles.regionSelector} onPress={() => setShowCountryPicker(true)}>
+                <Text style={styles.regionLabel}>COUNTRY</Text>
+                <View style={styles.regionValueRow}>
+                    <Text style={styles.regionValue}>{country === 'CA' ? 'Canada' : 'United States'}</Text>
+                    <Ionicons name="chevron-forward" size={18} color="#9a9a9a" />
+                </View>
+            </Pressable>
+            
+            <Pressable style={styles.regionSelector} onPress={() => setShowRegionPicker(true)}>
+                <Text style={styles.regionLabel}>{country === 'CA' ? 'PROVINCE' : 'STATE'}</Text>
+                <View style={styles.regionValueRow}>
+                    <Text style={styles.regionValue}>{regionLabel}</Text>
+                    <Ionicons name="chevron-forward" size={18} color="#9a9a9a" />
+                </View>
+            </Pressable>
 
-                        <Button label="Save Changes" onPress={handleSave} />
-                    </ScrollView>
-                </TouchableWithoutFeedback>
-            </KeyboardAvoidingView>
-        </ScreenContainer>
+            <Button label="Save Changes" onPress={handleSave} />
+        </KeyboardFormScreen>
     );
 }
