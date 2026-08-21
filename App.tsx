@@ -8,6 +8,7 @@ import { useProfileStore } from './src/store/useProfileStore';
 import RootNavigator from './src/navigation/RootNavigator';
 import OnboardingScreen from './src/screens/OnboardingScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
+import { useSalonStore } from './src/store/useSalonStore';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -15,6 +16,7 @@ export default function App() {
     const [dbReady, setDbReady] = useState(false);
     const [showWelcome, setShowWelcome] = useState(true);
     const { profile, isLoaded, loadProfile } = useProfileStore();
+    const loadSalon = useSalonStore((state) => state.loadSalon);
     const MIN_SPLASH_DURATION = 2000; // ms
 
     useEffect(() => {
@@ -23,8 +25,10 @@ export default function App() {
             try {
                 initDatabase();
                 // clearProfile();
+                // clearAllEntries();
                 loadProfile();
-                // setDbReady(true);
+                loadSalon();
+                setDbReady(true);
             } catch (error) {
                 console.error('Failed to initialize database:', error);
             }

@@ -12,7 +12,6 @@ import { styles } from '../../styles/MySalonScreen.styles';
 export default function MySalonScreen() {
     const navigation = useNavigation<any>();
     const { salon, saveSalon } = useSalonStore();
-
     const [name, setName] = useState(salon?.name ?? '');
     const [address, setAddress] = useState(salon?.address ?? '');
     const [splitPercent, setSplitPercent] = useState(salon?.splitPercent?.toString() ?? '');
