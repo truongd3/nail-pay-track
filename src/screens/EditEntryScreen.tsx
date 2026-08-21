@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RouteProp } from '@react-navigation/native';
-import type { HistoryStackParamList } from '../navigation/HistoryStackNavigator';
+import type { HistoryStackParamList } from '../navigation/types';
 import Button from '../components/Button';
 import CurrencyInput from '../components/CurrencyInput';
 import ScreenContainer from '../components/ScreenContainer';
