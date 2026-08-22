@@ -11,6 +11,7 @@ export type RootStackParamList = {
 };
 
 export type HistoryStackParamList = {
-  HistoryList: undefined;
-  EditEntry: { entry: Entry };
+    HistoryList: undefined;
+    EditEntry: { entry: Entry };
+    AddPastEntry: undefined;
 };

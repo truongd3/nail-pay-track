@@ -17,4 +17,17 @@ export const styles = StyleSheet.create({
     paddingTop: 12,
     paddingBottom: 40,
   },
+
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+  },
+
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 20,
+  },
 });
