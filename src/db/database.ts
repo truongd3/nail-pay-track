@@ -78,6 +78,11 @@ export function getRecentEntries(limit: number = 20): Entry[] {
     );
 }
 
+export function getEntryByDate(date: string): Entry | null {
+    const row = db.getFirstSync<Entry>(`SELECT * FROM entries WHERE date = ?`, [date]);
+    return row ?? null;
+}
+
 export function getMonthlySummary(yearMonth: string) {
     const result = db.getFirstSync<{ totalMoney: number; totalTip: number }>(
         `SELECT COALESCE(SUM(money), 0) as totalMoney,

@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AddPastEntryScreen from '../screens/AddPastEntryScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import EditEntryScreen from '../screens/EditEntryScreen';
 import type { HistoryStackParamList } from './types';
@@ -10,6 +11,7 @@ export default function HistoryStackNavigator() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="HistoryList" component={HistoryScreen} />
             <Stack.Screen name="EditEntry" component={EditEntryScreen} />
+            <Stack.Screen name="AddPastEntry" component={AddPastEntryScreen} />
         </Stack.Navigator>
     );
 }

@@ -11,6 +11,7 @@ interface EntryStore {
     removeEntry: (id: number) => void;
     refresh: () => void;
     editEntry: (id: number, money: number, tip: number) => void;
+    addEntryForDate: (date: string, money: number, tip: number) => void;
 }
 
 export const useEntryStore = create<EntryStore>((set, get) => ({
@@ -42,6 +43,11 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
 
     editEntry: (id, money, tip) => {
         updateEntry(id, money, tip);
+        get().refresh();
+    },
+
+    addEntryForDate: (date, money, tip) => {
+        upsertEntry(date, money, tip);
         get().refresh();
     },
 }));

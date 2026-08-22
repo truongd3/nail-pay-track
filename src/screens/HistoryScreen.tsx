@@ -3,6 +3,7 @@ import { View, FlatList, Alert, Pressable } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 import type { HistoryStackParamList, RootStackParamList } from '../navigation/types';
 import Avatar from '../components/Avatar';
 import EmptyState from '../components/EmptyState';
@@ -63,7 +64,12 @@ export default function HistoryScreen() {
                 </Pressable>
             </View>
 
-            <ScreenHeader label="ALL TIME" title="History" />
+            <View style={styles.sectionHeaderRow}>
+                <ScreenHeader label="ALL TIME" title="History" />
+                <Pressable onPress={() => navigation.navigate('AddPastEntry')} hitSlop={8}>
+                    <Ionicons name="add-circle-outline" size={32} color="#5a9c6f" />
+                </Pressable>
+            </View>
 
             <FlatList
                 data={entries}
