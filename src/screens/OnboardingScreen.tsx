@@ -10,11 +10,12 @@ import ProgressDots from '../components/ProgressDots';
 import Button from '../components/Button';
 import { US_STATES, CA_PROVINCES } from '../data/regions';
 import { useProfileStore } from '../store/useProfileStore';
+import { useSalonStore } from '../store/useSalonStore';
 import { Country } from '../types/profile';
 import { styles } from '../styles/OnboardingScreen.styles';
 import { getInitials } from '../utils/initials';
 
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 5;
 
 async function persistAvatarImage(uri: string): Promise<string> {
     const filename = `avatar_${Date.now()}.jpg`;
@@ -25,6 +26,7 @@ async function persistAvatarImage(uri: string): Promise<string> {
 
 export default function OnboardingScreen() {
     const saveProfile = useProfileStore((state) => state.saveProfile);
+    const saveSalon = useSalonStore((state) => state.saveSalon);
 
     const [step, setStep] = useState(0);
     const [name, setName] = useState('');
@@ -33,6 +35,9 @@ export default function OnboardingScreen() {
     const [country, setCountry] = useState<Country | null>(null);
     const [region, setRegion] = useState<string | null>(null);
     const [avatarUri, setAvatarUri] = useState<string | null>(null);
+    const [salonName, setSalonName] = useState('');
+    const [salonAddress, setSalonAddress] = useState('');
+    const [splitPercent, setSplitPercent] = useState('');
 
     const regionOptions = country === 'CA' ? CA_PROVINCES : US_STATES;
 
@@ -40,6 +45,7 @@ export default function OnboardingScreen() {
         if (step === 0) return name.trim() !== '' && email.trim() !== '' && phone.trim() !== '';
         if (step === 1) return country !== null;
         if (step === 2) return region !== null;
+        if (step === 3) return true;
         return true; // avatar step is optional
     };
 
@@ -70,7 +76,15 @@ export default function OnboardingScreen() {
 
     const handleFinish = () => {
         if (!country || !region) return;
+
         saveProfile({ name, email, phone, country, region, avatarUri });
+
+        const trimmedName = salonName.trim();
+        const trimmedAddress = salonAddress.trim();
+        const parsedSplit = parseFloat(splitPercent);
+        const finalSplit = isNaN(parsedSplit) ? 100 : parsedSplit;
+
+        if (trimmedName || trimmedAddress || splitPercent.trim()) saveSalon({ name: trimmedName, address: trimmedAddress, splitPercent: finalSplit });
     };
 
     return (
@@ -138,6 +152,27 @@ export default function OnboardingScreen() {
                     <Pressable style={styles.uploadButton} onPress={handlePickAvatar}>
                         <Text style={styles.uploadButtonText}>Upload photo</Text>
                     </Pressable>
+                </>
+            )}
+
+            {step === 4 && (
+                <>
+                    <Text style={styles.stepTitle}>Tell us about your salon</Text>
+                    <Text style={styles.stepSubtitle}>Optional — you can always add or change this later.</Text>
+                    <LabeledInput
+                        label="SALON NAME" value={salonName}
+                        onChangeText={setSalonName} placeholder="Luxe Nails & Spa"
+                    />
+                    <LabeledInput
+                        label="ADDRESS" value={salonAddress}
+                        onChangeText={setSalonAddress} placeholder="123 Main St, City"
+                    />
+                    <LabeledInput
+                        label="YOUR SPLIT (%)" value={splitPercent}
+                        onChangeText={setSplitPercent} placeholder="e.g. 60"
+                        keyboardType="decimal-pad"
+                    />
+                    <Text style={styles.stepHint}>Leave blank if you keep 100% of what you earn.</Text>
                 </>
             )}
 

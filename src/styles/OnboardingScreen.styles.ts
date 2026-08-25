@@ -55,4 +55,12 @@ export const styles = StyleSheet.create({
     marginTop: 'auto',
     gap: 10,
   },
+
+  stepHint: {
+    fontSize: 13,
+    color: '#9a9a9a',
+    marginTop: -8,
+    marginBottom: 10,
+    lineHeight: 18,
+  },
 });
