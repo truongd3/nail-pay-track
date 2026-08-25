@@ -47,18 +47,7 @@ export default function AddPastEntryScreen() {
         if (existing) {
             Alert.alert(
                 'Entry already exists',
-                `You already logged ${displayDate}. Saving will overwrite the existing entry.`,
-                [
-                    { text: 'Cancel', style: 'cancel' },
-                    {
-                        text: 'Overwrite',
-                        style: 'destructive',
-                        onPress: () => {
-                            addEntryForDate(dateString, moneyNum, tipNum);
-                            navigation.goBack();
-                        },
-                    },
-                ]
+                `You already logged ${displayDate}. Go to History and tap that entry to edit it instead.`
             );
             return;
         }
