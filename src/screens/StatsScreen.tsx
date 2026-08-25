@@ -10,9 +10,12 @@ import StatCard from '../components/StatCard';
 import StatRow from '../components/StatRow';
 import StatsTableHeader from '../components/StatsTableHeader';
 import StatsTableRow from '../components/StatsTableRow';
-import { getMonthlyStats, MonthlyStat } from '../db/database';
+import { getMonthlyStats, getEntriesForMonth, MonthlyStat } from '../db/database';
 import { useProfileStore } from '../store/useProfileStore';
+import { useSalonStore } from '../store/useSalonStore';
 import { getInitials } from '../utils/initials';
+import { reconcileTips } from '../utils/tipReconciliation';
+import { calculateWageExcludingTip } from '../utils/wage';
 import { styles } from '../styles/StatsScreen.styles';
 
 function formatMonthLabel(monthKey: string) {
@@ -24,6 +27,7 @@ function formatMonthLabel(monthKey: string) {
 export default function StatsScreen() {
     const [monthlyStats, setMonthlyStats] = useState<MonthlyStat[]>([]);
     const profile = useProfileStore((state) => state.profile);
+    const splitPercent = useSalonStore((state) => state.salon?.splitPercent ?? 100);
     const navigation = useNavigation<any>();
 
     const loadStats = () => {
@@ -36,9 +40,7 @@ export default function StatsScreen() {
         }, [])
     );
 
-    const totalWage = monthlyStats.reduce(
-        (sum, m) => sum + m.totalMoney + m.totalTip,0
-    );
+    const totalWage = monthlyStats.reduce((sum, m) => sum + calculateWageExcludingTip(m.totalMoney, splitPercent), 0);
     const totalTips = monthlyStats.reduce((sum, m) => sum + m.totalTip, 0);
 
     const now = new Date();
@@ -53,7 +55,7 @@ export default function StatsScreen() {
                 </Pressable>
             </View>
 
-            <ScreenHeader label="OVERVIEW" title="Monthly Stats" />
+            <ScreenHeader label="OVERVIEW" title="Overall Stats" />
 
             <StatRow>
                 <StatCard label="TOTAL WAGE" value={`$${totalWage.toFixed(2)}`} />
@@ -67,14 +69,16 @@ export default function StatsScreen() {
             <FlatList
                 data={monthlyStats}
                 keyExtractor={(item) => item.month}
-                renderItem={({ item }) => (
-                    <StatsTableRow
-                        monthLabel={formatMonthLabel(item.month)}
-                        tip={item.totalTip}
-                        received={0}
-                        unpaid={0}
-                    />
-                )}
+                renderItem={({ item }) => {
+                    const monthEntries = getEntriesForMonth(item.month);
+                    const { received, unpaid } = reconcileTips(monthEntries);
+                    return (
+                        <StatsTableRow
+                            monthLabel={formatMonthLabel(item.month)}
+                            tip={item.totalTip} received={received} unpaid={unpaid}
+                        />
+                    );
+                }}
                 contentContainerStyle={styles.listContent}
                 showsVerticalScrollIndicator={false}
                 ListEmptyComponent={

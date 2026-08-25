@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '700',
     color: '#1a1a2e',
-    marginTop: 24,
+    marginTop: 0,
     marginBottom: 12,
   },
   listContent: {
