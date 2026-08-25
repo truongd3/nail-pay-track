@@ -147,3 +147,10 @@ export function saveSalon(salon: Salon) {
         [salon.name, salon.address, salon.splitPercent]
     );
 }
+
+export function getEntriesForMonth(yearMonth: string): Entry[] {
+    return db.getAllSync<Entry>(
+        `SELECT * FROM entries WHERE date LIKE ? ORDER BY date ASC`,
+        [`${yearMonth}%`]
+    );
+}

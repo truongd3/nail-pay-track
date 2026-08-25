@@ -10,9 +10,10 @@ import StatCard from '../components/StatCard';
 import StatRow from '../components/StatRow';
 import StatsTableHeader from '../components/StatsTableHeader';
 import StatsTableRow from '../components/StatsTableRow';
-import { getMonthlyStats, MonthlyStat } from '../db/database';
+import { getMonthlyStats, getEntriesForMonth, MonthlyStat } from '../db/database';
 import { useProfileStore } from '../store/useProfileStore';
 import { getInitials } from '../utils/initials';
+import { reconcileTips } from '../utils/tipReconciliation';
 import { styles } from '../styles/StatsScreen.styles';
 
 function formatMonthLabel(monthKey: string) {
@@ -67,14 +68,16 @@ export default function StatsScreen() {
             <FlatList
                 data={monthlyStats}
                 keyExtractor={(item) => item.month}
-                renderItem={({ item }) => (
-                    <StatsTableRow
-                        monthLabel={formatMonthLabel(item.month)}
-                        tip={item.totalTip}
-                        received={0}
-                        unpaid={0}
-                    />
-                )}
+                renderItem={({ item }) => {
+                    const monthEntries = getEntriesForMonth(item.month);
+                    const { received, unpaid } = reconcileTips(monthEntries);
+                    return (
+                        <StatsTableRow
+                            monthLabel={formatMonthLabel(item.month)}
+                            tip={item.totalTip} received={received} unpaid={unpaid}
+                        />
+                    );
+                }}
                 contentContainerStyle={styles.listContent}
                 showsVerticalScrollIndicator={false}
                 ListEmptyComponent={
