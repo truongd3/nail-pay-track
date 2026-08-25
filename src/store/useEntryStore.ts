@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { getRecentEntries, getMonthlySummary, upsertEntry, deleteEntry, updateEntry } from '../db/database';
 import { Entry } from '../types/entry';
 import { getTodayLocal, getCurrentMonthLocal } from '../utils/date';
+import { calculateWageExcludingTip, getCurrentSplitPercent } from '../utils/wage';
 
 interface EntryStore {
     recentEntries: Entry[];
@@ -34,9 +35,10 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
         const entries = getRecentEntries(20);
         const currentMonth = getCurrentMonthLocal();
         const summary = getMonthlySummary(currentMonth);
+        const splitPercent = getCurrentSplitPercent();
         set({
             recentEntries: entries,
-            monthTotal: (summary?.totalMoney ?? 0),
+            monthTotal: calculateWageExcludingTip(summary?.totalMoney ?? 0, splitPercent),
             monthTips: summary?.totalTip ?? 0,
         });
     },
