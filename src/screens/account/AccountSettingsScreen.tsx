@@ -12,6 +12,8 @@ import { styles } from '../../styles/AccountSettingsScreen.styles';
 
 export default function AccountSettingsScreen() {
     const [notifications, setNotifications] = useState(false);
+    const [emailNotif, setEmailNotif] = useState(false);
+    const [phoneNotif, setPhoneNotif] = useState(false);
     const [reminderTime, setReminderTime] = useState(new Date(2000, 0, 1, 22, 0)); // 10:00 PM default
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [theme, setTheme] = useState('light');
@@ -21,8 +23,18 @@ export default function AccountSettingsScreen() {
         minute: '2-digit',
     });
 
+    const handleDailyReminderChange = (value: boolean) => {
+        setNotifications(value);
+        if (!value) {
+            setEmailNotif(false);
+            setPhoneNotif(false);
+        }
+    };
+
     const handleTimeChange = (event: any, selectedTime?: Date) => {
-        setShowTimePicker(Platform.OS === 'ios');
+        // Android dismisses automatically after selection/cancel
+        if (Platform.OS === 'android') setShowTimePicker(false);
+
         if (selectedTime) setReminderTime(selectedTime);
     };
 
@@ -44,29 +56,51 @@ export default function AccountSettingsScreen() {
                 <SettingsSection label="NOTIFICATIONS">
                     <SettingsRow label="DAILY REMINDER">
                         <Switch
-                            value={notifications} onValueChange={setNotifications}
+                            value={notifications} onValueChange={handleDailyReminderChange}
                             trackColor={{ true: '#5a9c6f' }}
                         />
                     </SettingsRow>
 
                     {notifications && (
-                        <SettingsRow label="REMIND ME AT" divider>
-                            <Pressable style={styles.timeRow} onPress={() => setShowTimePicker(true)}>
-                                <Text style={styles.timeText}>{timeLabel}</Text>
-                                <Ionicons name="time-outline" size={20} color="#1a1a2e" />
-                            </Pressable>
-                        </SettingsRow>
+                        <>
+                            <SettingsRow label="REMIND ME AT" divider>
+                                {Platform.OS === 'ios' ? (
+                                    <DateTimePicker
+                                        value={reminderTime} mode="time"
+                                        display="compact" onValueChange={handleTimeChange}
+                                    />
+                                ) : (
+                                    <>
+                                        <Pressable style={styles.timeRow} onPress={() => setShowTimePicker(true)}>
+                                            <Text style={styles.timeText}>{timeLabel}</Text>
+                                            <Ionicons name="time-outline" size={20} color="#1a1a2e" />
+                                        </Pressable>
+                                        {showTimePicker && (
+                                            <DateTimePicker
+                                                value={reminderTime} mode="time"
+                                                display="default" onValueChange={handleTimeChange}
+                                            />
+                                        )}
+                                    </>
+                                )}
+                            </SettingsRow>
+
+                            <SettingsRow label="EMAIL NOTIFICATION" divider>
+                                <Switch
+                                    value={emailNotif} onValueChange={setEmailNotif}
+                                    disabled={!notifications} trackColor={{ true: '#5a9c6f' }}
+                                />
+                            </SettingsRow>
+
+                            <SettingsRow label="PHONE NOTIFICATION">
+                                <Switch
+                                    value={phoneNotif} onValueChange={setPhoneNotif}
+                                    disabled={!notifications} trackColor={{ true: '#5a9c6f' }}
+                                />
+                            </SettingsRow>
+                        </>
                     )}
                 </SettingsSection>
-
-                {showTimePicker && (
-                    <DateTimePicker
-                        value={reminderTime}
-                        mode="time"
-                        display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                        onValueChange={handleTimeChange}
-                    />
-                )}
 
                 <SettingsSection label="APPEARANCE">
                     <SettingsRow label="THEME">
