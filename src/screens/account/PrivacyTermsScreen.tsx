@@ -1,8 +1,7 @@
 import { View, Text, Pressable, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import BackHeader from '../../components/BackHeader';
 import ScreenContainer from '../../components/ScreenContainer';
+import { PRIVACY_POLICY, TERMS_OF_SERVICE } from '../../data/legal';
 import { styles } from '../../styles/StaticContentScreen.styles';
 
 export default function PrivacyTermsScreen() {
@@ -11,9 +10,12 @@ export default function PrivacyTermsScreen() {
             <ScrollView contentContainerStyle={styles.content}>
                 <BackHeader title="Privacy & Terms" />
                 <View style={styles.card}>
-                    <Text style={styles.answer}>
-                        Placeholder — add your real privacy policy and terms of service here before submitting to the App Store. Apple requires a working privacy policy link for apps that collect personal data.
-                    </Text>
+                    <Text style={styles.question}>Privacy Policy</Text>
+                    <Text style={styles.answer}>{PRIVACY_POLICY}</Text>
+                </View>
+                <View style={styles.card}>
+                    <Text style={styles.question}>Terms of Service</Text>
+                    <Text style={styles.answer}>{TERMS_OF_SERVICE}</Text>
                 </View>
             </ScrollView>
         </ScreenContainer>
