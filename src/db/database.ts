@@ -2,6 +2,7 @@ import * as SQLite from 'expo-sqlite';
 import { Entry } from '../types/entry';
 import { Profile } from '../types/profile';
 import { Salon } from '../types/salon';
+import { Settings } from '../types/settings';
 
 const db = SQLite.openDatabaseSync('nailpay.db');
 
@@ -34,6 +35,17 @@ export function initDatabase() {
             name TEXT,
             address TEXT,
             splitPercent REAL
+        );
+    `);
+
+    db.execSync(`
+        CREATE TABLE IF NOT EXISTS settings (
+            id INTEGER PRIMARY KEY CHECK (id = 1),
+            notifications INTEGER NOT NULL,
+            emailNotif INTEGER NOT NULL,
+            phoneNotif INTEGER NOT NULL,
+            reminderTime TEXT NOT NULL,
+            theme TEXT NOT NULL
         );
     `);
 }
@@ -152,5 +164,45 @@ export function getEntriesForMonth(yearMonth: string): Entry[] {
     return db.getAllSync<Entry>(
         `SELECT * FROM entries WHERE date LIKE ? ORDER BY date ASC`,
         [`${yearMonth}%`]
+    );
+}
+
+const DEFAULT_SETTINGS: Settings = {
+    notifications: false,
+    emailNotif: false,
+    phoneNotif: false,
+    reminderTime: '22:00',
+    theme: 'light',
+};
+
+export function getSettings(): Settings {
+    const row = db.getFirstSync<any>(`SELECT * FROM settings WHERE id = 1`);
+    if (!row) return DEFAULT_SETTINGS;
+    return {
+        notifications: !!row.notifications,
+        emailNotif: !!row.emailNotif,
+        phoneNotif: !!row.phoneNotif,
+        reminderTime: row.reminderTime,
+        theme: row.theme,
+    };
+}
+
+export function saveSettings(settings: Settings) {
+    db.runSync(
+        `INSERT INTO settings (id, notifications, emailNotif, phoneNotif, reminderTime, theme)
+        VALUES (1, ?, ?, ?, ?, ?)
+        ON CONFLICT(id) DO UPDATE SET
+            notifications=excluded.notifications,
+            emailNotif=excluded.emailNotif,
+            phoneNotif=excluded.phoneNotif,
+            reminderTime=excluded.reminderTime,
+            theme=excluded.theme`,
+        [
+            settings.notifications ? 1 : 0,
+            settings.emailNotif ? 1 : 0,
+            settings.phoneNotif ? 1 : 0,
+            settings.reminderTime,
+            settings.theme,
+        ]
     );
 }

@@ -9,33 +9,34 @@ import SettingsRow from '../../components/SettingsRow';
 import SegmentedControl from '../../components/SegmentedControl';
 import { getAllEntries } from '../../db/database';
 import { styles } from '../../styles/AccountSettingsScreen.styles';
+import { useSettingsStore } from '../../store/useSettingsStore';
 
 export default function AccountSettingsScreen() {
-    const [notifications, setNotifications] = useState(false);
-    const [emailNotif, setEmailNotif] = useState(false);
-    const [phoneNotif, setPhoneNotif] = useState(false);
-    const [reminderTime, setReminderTime] = useState(new Date(2000, 0, 1, 22, 0)); // 10:00 PM default
     const [showTimePicker, setShowTimePicker] = useState(false);
-    const [theme, setTheme] = useState('light');
+    const { settings, updateSettings } = useSettingsStore();
+    // convert stored "HH:MM" string to a Date object for the picker
+    const [hours, minutes] = settings.reminderTime.split(':').map(Number);
+    const reminderTimeDate = new Date(2000, 0, 1, hours, minutes);
 
-    const timeLabel = reminderTime.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
+    const timeLabel = reminderTimeDate.toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit' 
     });
 
     const handleDailyReminderChange = (value: boolean) => {
-        setNotifications(value);
-        if (!value) {
-            setEmailNotif(false);
-            setPhoneNotif(false);
-        }
+        updateSettings({
+            notifications: value,
+            ...(!value && { emailNotif: false, phoneNotif: false }),
+        });
     };
 
     const handleTimeChange = (event: any, selectedTime?: Date) => {
-        // Android dismisses automatically after selection/cancel
         if (Platform.OS === 'android') setShowTimePicker(false);
-
-        if (selectedTime) setReminderTime(selectedTime);
+        if (selectedTime) {
+            const hh = selectedTime.getHours().toString().padStart(2, '0');
+            const mm = selectedTime.getMinutes().toString().padStart(2, '0');
+            updateSettings({ reminderTime: `${hh}:${mm}` });
+        }
     };
 
     const handleExport = async () => {
@@ -55,20 +56,14 @@ export default function AccountSettingsScreen() {
 
                 <SettingsSection label="NOTIFICATIONS">
                     <SettingsRow label="DAILY REMINDER">
-                        <Switch
-                            value={notifications} onValueChange={handleDailyReminderChange}
-                            trackColor={{ true: '#5a9c6f' }}
-                        />
+                        <Switch value={settings.notifications} onValueChange={handleDailyReminderChange} trackColor={{ true: '#5a9c6f' }} />
                     </SettingsRow>
 
-                    {notifications && (
+                    {settings.notifications && (
                         <>
                             <SettingsRow label="REMIND ME AT" divider>
                                 {Platform.OS === 'ios' ? (
-                                    <DateTimePicker
-                                        value={reminderTime} mode="time"
-                                        display="compact" onValueChange={handleTimeChange}
-                                    />
+                                    <DateTimePicker value={reminderTimeDate} mode="time" display="compact" onValueChange={handleTimeChange} />
                                 ) : (
                                     <>
                                         <Pressable style={styles.timeRow} onPress={() => setShowTimePicker(true)}>
@@ -76,27 +71,18 @@ export default function AccountSettingsScreen() {
                                             <Ionicons name="time-outline" size={20} color="#1a1a2e" />
                                         </Pressable>
                                         {showTimePicker && (
-                                            <DateTimePicker
-                                                value={reminderTime} mode="time"
-                                                display="default" onValueChange={handleTimeChange}
-                                            />
+                                            <DateTimePicker value={reminderTimeDate} mode="time" display="default" onValueChange={handleTimeChange} />
                                         )}
                                     </>
                                 )}
                             </SettingsRow>
 
                             <SettingsRow label="EMAIL NOTIFICATION" divider>
-                                <Switch
-                                    value={emailNotif} onValueChange={setEmailNotif}
-                                    disabled={!notifications} trackColor={{ true: '#5a9c6f' }}
-                                />
+                                <Switch value={settings.emailNotif} onValueChange={(v) => updateSettings({ emailNotif: v })} disabled={!settings.notifications} trackColor={{ true: '#5a9c6f' }} />
                             </SettingsRow>
 
                             <SettingsRow label="PHONE NOTIFICATION">
-                                <Switch
-                                    value={phoneNotif} onValueChange={setPhoneNotif}
-                                    disabled={!notifications} trackColor={{ true: '#5a9c6f' }}
-                                />
+                                <Switch value={settings.phoneNotif} onValueChange={(v) => updateSettings({ phoneNotif: v })} disabled={!settings.notifications} trackColor={{ true: '#5a9c6f' }} />
                             </SettingsRow>
                         </>
                     )}
@@ -104,12 +90,13 @@ export default function AccountSettingsScreen() {
 
                 <SettingsSection label="APPEARANCE">
                     <SettingsRow label="THEME">
-                        <SegmentedControl
+                        <SegmentedControl 
                             options={[
-                                { label: 'Light', value: 'light' },
-                                { label: 'Dark', value: 'dark' },
-                            ]}
-                            selectedValue={theme} onSelect={setTheme}
+                                { label: 'Light', value: 'light' }, 
+                                { label: 'Dark', value: 'dark' }
+                            ]} 
+                            selectedValue={settings.theme} 
+                            onSelect={(v) => updateSettings({ theme: v as 'light' | 'dark' })} 
                         />
                     </SettingsRow>
                 </SettingsSection>
