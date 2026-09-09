@@ -5,10 +5,11 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as SplashScreen from 'expo-splash-screen';
 import { initDatabase, clearAllEntries, clearProfile } from './src/db/database';
 import { useProfileStore } from './src/store/useProfileStore';
+import { useSalonStore } from './src/store/useSalonStore';
+import { useSettingsStore } from './src/store/useSettingsStore';
 import RootNavigator from './src/navigation/RootNavigator';
 import OnboardingScreen from './src/screens/OnboardingScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
-import { useSalonStore } from './src/store/useSalonStore';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -18,6 +19,7 @@ export default function App() {
     const { profile, isLoaded, loadProfile } = useProfileStore();
     const loadSalon = useSalonStore((state) => state.loadSalon);
     const MIN_SPLASH_DURATION = 2000; // ms
+    const loadSettings = useSettingsStore((state) => state.loadSettings);
 
     useEffect(() => {
         async function prepare() {
@@ -28,6 +30,7 @@ export default function App() {
                 // clearAllEntries();
                 loadProfile();
                 loadSalon();
+                loadSettings();
                 setDbReady(true);
             } catch (error) {
                 console.error('Failed to initialize database:', error);
