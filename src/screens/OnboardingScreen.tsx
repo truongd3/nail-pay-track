@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { View, Text, Alert, Pressable, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system/legacy';
-import { Ionicons } from '@expo/vector-icons';
 import KeyboardFormScreen from '../components/KeyboardFormScreen';
 import LabeledInput from '../components/LabeledInput';
 import OptionList from '../components/OptionList';
