@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, Pressable, Image } from 'react-native';
+import { View, Text, Pressable, Image, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
@@ -38,6 +38,7 @@ export default function MyProfileScreen() {
 
     const regionOptions = country === 'CA' ? CA_PROVINCES : US_STATES;
     const regionLabel = regionOptions.find((r) => r.value === region)?.label ?? 'Select';
+    const isValid = name.trim() !== '' && email.trim() !== '' && phone.trim() !== '' && !!region;
 
     const handlePickAvatar = async () => {
         const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -52,7 +53,14 @@ export default function MyProfileScreen() {
     };
 
     const handleSave = () => {
-        if (!region) return;
+        if (!name.trim() || !email.trim() || !phone.trim()) {
+            Alert.alert('Missing information', 'Name, email, and phone are required.');
+            return;
+        }
+        if (!region) {
+            Alert.alert('Missing information', 'Please select your state/province.');
+            return;
+        }
         saveProfile({ name, email, phone, country, region, avatarUri });
         navigation.goBack();
     };
@@ -125,7 +133,7 @@ export default function MyProfileScreen() {
                 </View>
             </Pressable>
 
-            <Button label="Save Changes" onPress={handleSave} />
+            <Button label="Save Changes" onPress={handleSave} disabled={!isValid} />
         </KeyboardFormScreen>
     );
 }
