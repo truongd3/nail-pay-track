@@ -10,6 +10,7 @@ import SegmentedControl from '../../components/SegmentedControl';
 import { getAllEntries } from '../../db/database';
 import { styles } from '../../styles/AccountSettingsScreen.styles';
 import { useSettingsStore } from '../../store/useSettingsStore';
+import { requestNotificationPermission, scheduleDailyReminder, cancelDailyReminder } from '../../utils/notifications';
 
 export default function AccountSettingsScreen() {
     const [showTimePicker, setShowTimePicker] = useState(false);
@@ -23,19 +24,43 @@ export default function AccountSettingsScreen() {
         minute: '2-digit' 
     });
 
-    const handleDailyReminderChange = (value: boolean) => {
-        updateSettings({
-            notifications: value,
-            ...(!value && { emailNotif: false, phoneNotif: false }),
-        });
+    const handleDailyReminderChange = async (value: boolean) => {
+        if (!value) { // turning off the master toggle disables everything under it
+            await cancelDailyReminder();
+            updateSettings({ notifications: false, phoneNotif: false, emailNotif: false });
+        } else {
+            updateSettings({ notifications: true });
+            // Note: turning on "Daily Reminder" alone does NOT schedule anything — the user still needs to enable "Phone Notification" specifically
+        }
     };
 
-    const handleTimeChange = (event: any, selectedTime?: Date) => {
+    const handlePhoneNotifChange = async (value: boolean) => {
+        if (value) {
+            const granted = await requestNotificationPermission();
+            if (!granted) {
+                Alert.alert(
+                    "Permission needed",
+                    "Please enable notifications for this app in your phone settings."
+                );
+            return;
+            }
+            const [hours, minutes] = settings.reminderTime.split(':').map(Number);
+            await scheduleDailyReminder(hours, minutes);
+            updateSettings({ phoneNotif: true });
+        } else {
+            await cancelDailyReminder();
+            updateSettings({ phoneNotif: false });
+        }
+    };
+
+    const handleTimeChange = async (event: any, selectedTime?: Date) => {
         if (Platform.OS === 'android') setShowTimePicker(false);
         if (selectedTime) {
             const hh = selectedTime.getHours().toString().padStart(2, '0');
             const mm = selectedTime.getMinutes().toString().padStart(2, '0');
             updateSettings({ reminderTime: `${hh}:${mm}` });
+
+            if (settings.phoneNotif) await scheduleDailyReminder(selectedTime.getHours(), selectedTime.getMinutes());
         }
     };
 
@@ -77,12 +102,21 @@ export default function AccountSettingsScreen() {
                                 )}
                             </SettingsRow>
 
-                            <SettingsRow label="EMAIL NOTIFICATION" divider>
-                                <Switch value={settings.emailNotif} onValueChange={(v) => updateSettings({ emailNotif: v })} disabled={!settings.notifications} trackColor={{ true: '#5a9c6f' }} />
+                            <SettingsRow label="PHONE NOTIFICATION" divider>
+                                <Switch value={settings.phoneNotif} onValueChange={handlePhoneNotifChange} disabled={!settings.notifications} trackColor={{ true: '#5a9c6f' }} />
                             </SettingsRow>
 
-                            <SettingsRow label="PHONE NOTIFICATION">
-                                <Switch value={settings.phoneNotif} onValueChange={(v) => updateSettings({ phoneNotif: v })} disabled={!settings.notifications} trackColor={{ true: '#5a9c6f' }} />
+                            <SettingsRow label="EMAIL NOTIFICATION">
+                                <Switch
+                                    value={false}
+                                    onValueChange={() =>
+                                        Alert.alert(
+                                            "Coming soon",
+                                            "Email reminders aren\'t available yet. For now, you can use phone notifications instead."
+                                        )
+                                    }
+                                    trackColor={{ true: '#5a9c6f' }}
+                                />
                             </SettingsRow>
                         </>
                     )}
