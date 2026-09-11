@@ -10,6 +10,7 @@ import { useSettingsStore } from './src/store/useSettingsStore';
 import RootNavigator from './src/navigation/RootNavigator';
 import OnboardingScreen from './src/screens/OnboardingScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
+import { scheduleDailyReminder } from './src/utils/notifications';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -41,6 +42,15 @@ export default function App() {
         }
         prepare();
     }, []);
+
+    useEffect(() => {
+        if (!isLoaded) return;
+        const settings = useSettingsStore.getState().settings;
+        if (settings.phoneNotif) {   // was: settings.notifications
+            const [hours, minutes] = settings.reminderTime.split(':').map(Number);
+            scheduleDailyReminder(hours, minutes);
+        }
+    }, [isLoaded]);
 
     const onLayoutRootView = useCallback(async () => {
         if (dbReady && isLoaded) await SplashScreen.hideAsync();
