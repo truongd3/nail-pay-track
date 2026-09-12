@@ -1,5 +1,6 @@
 import { View, Text } from 'react-native';
-import { styles } from '../styles/StatsTableRow.styles';
+import { createStyles } from '../styles/StatsTableRow.styles';
+import { useTheme } from '../theme/ThemeContext';
 
 interface StatsTableRowProps {
     monthLabel: string;
@@ -8,12 +9,10 @@ interface StatsTableRowProps {
     unpaid: number;
 }
 
-export default function StatsTableRow({
-    monthLabel,
-    tip,
-    received,
-    unpaid,
-}: StatsTableRowProps) {
+export default function StatsTableRow({ monthLabel, tip, received, unpaid }: StatsTableRowProps) {
+    const colors = useTheme();
+    const styles = createStyles(colors);
+
     return (
         <View style={styles.row}>
             <Text style={[styles.cell, styles.monthCell, styles.monthText]}>

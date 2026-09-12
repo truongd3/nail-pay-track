@@ -12,18 +12,21 @@ import AccountSettingsScreen from '../screens/account/AccountSettingsScreen';
 import HelpFAQScreen from '../screens/account/HelpFAQScreen';
 import PrivacyTermsScreen from '../screens/account/PrivacyTermsScreen';
 import type { RootStackParamList } from './types';
+import { useTheme } from '../theme/ThemeContext';
 
 const Tab = createBottomTabNavigator();
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 function MainTabs() {
+    const colors = useTheme();
+
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 headerShown: false,
-                tabBarActiveTintColor: '#5a9c6f',
-                tabBarInactiveTintColor: '#9a9a9a',
-                tabBarStyle: { backgroundColor: '#faf8f3', borderTopColor: '#eee' },
+                tabBarActiveTintColor: colors.accent,
+                tabBarInactiveTintColor: colors.textSecondary,
+                tabBarStyle: { backgroundColor: colors.background, borderTopColor: colors.border },
                 tabBarLabelStyle: { fontSize: 11, fontWeight: '600', letterSpacing: 0.5 },
                 tabBarIcon: ({ color, size }) => {
                     let iconName: keyof typeof Ionicons.glyphMap = 'ellipse';

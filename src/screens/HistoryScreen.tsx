@@ -15,14 +15,17 @@ import { getAllEntries } from '../db/database';
 import { Entry } from '../types/entry';
 import { useProfileStore } from '../store/useProfileStore';
 import { getInitials } from '../utils/initials';
-import { styles } from '../styles/HistoryScreen.styles';
+import { createStyles } from '../styles/HistoryScreen.styles';
+import { useTheme } from '../theme/ThemeContext';
 
 type HistoryNavProp = CompositeNavigationProp<
-  NativeStackNavigationProp<HistoryStackParamList, 'HistoryList'>,
-  NativeStackNavigationProp<RootStackParamList>
+    NativeStackNavigationProp<HistoryStackParamList, 'HistoryList'>,
+    NativeStackNavigationProp<RootStackParamList>
 >;
 
 export default function HistoryScreen() {
+    const colors = useTheme();
+    const styles = createStyles(colors);
     const navigation = useNavigation<HistoryNavProp>();
     const [entries, setEntries] = useState<Entry[]>([]);
     const removeEntry = useEntryStore((state) => state.removeEntry);
@@ -67,7 +70,7 @@ export default function HistoryScreen() {
             <View style={styles.sectionHeaderRow}>
                 <ScreenHeader label="ALL TIME" title="History" />
                 <Pressable onPress={() => navigation.navigate('AddPastEntry')} hitSlop={8}>
-                    <Ionicons name="add-circle-outline" size={32} color="#5a9c6f" />
+                    <Ionicons name="add-circle-outline" size={32} color={colors.accent} />
                 </Pressable>
             </View>
 

@@ -11,7 +11,8 @@ import ScreenContainer from '../components/ScreenContainer';
 import ScreenHeader from '../components/ScreenHeader';
 import StatCard from '../components/StatCard';
 import StatRow from '../components/StatRow';
-import { styles } from '../styles/TodayScreen.styles';
+import { createStyles } from '../styles/TodayScreen.styles';
+import { useTheme } from '../theme/ThemeContext';
 import { useEntryStore } from '../store/useEntryStore';
 import { useProfileStore } from '../store/useProfileStore';
 import { getInitials } from '../utils/initials';
@@ -28,6 +29,8 @@ function formatDayLabel(dateStr: string) {
 }
 
 export default function TodayScreen() {
+    const colors = useTheme();
+    const styles = createStyles(colors);
     const { recentEntries, monthTotal, monthTips, saveEntry, refresh } = useEntryStore();
     const [money, setMoney] = useState('');
     const [tip, setTip] = useState('');

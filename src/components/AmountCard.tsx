@@ -1,5 +1,6 @@
 import { View, Text } from 'react-native';
-import { styles } from '../styles/AmountCard.styles';
+import { createStyles } from '../styles/AmountCard.styles';
+import { useTheme } from '../theme/ThemeContext';
 
 interface AmountCardProps {
   money: number;
@@ -7,6 +8,8 @@ interface AmountCardProps {
 }
 
 export default function AmountCard({ money, tip }: AmountCardProps) {
+  const colors = useTheme();
+  const styles = createStyles(colors);
   return (
     <View style={styles.amounts}>
       <Text style={styles.money}>${money.toFixed(2)}</Text>

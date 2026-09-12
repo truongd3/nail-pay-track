@@ -1,5 +1,6 @@
 import { View, Text, TextInput } from 'react-native';
-import { styles } from '../styles/CurrencyInput.styles';
+import { createStyles } from '../styles/CurrencyInput.styles';
+import { useTheme } from '../theme/ThemeContext';
 
 interface CurrencyInputProps {
   label: string;
@@ -8,6 +9,8 @@ interface CurrencyInputProps {
 }
 
 export default function CurrencyInput({ label, value, onChangeText }: CurrencyInputProps) {
+  const colors = useTheme();
+  const styles = createStyles(colors);
   return (
     <View style={styles.inputCard}>
       <Text style={styles.inputLabel}>{label}</Text>
@@ -16,7 +19,7 @@ export default function CurrencyInput({ label, value, onChangeText }: CurrencyIn
         <TextInput
           style={styles.input}
           placeholder="0.00"
-          placeholderTextColor="#d0d0d0"
+          placeholderTextColor={colors.textSecondary}
           keyboardType="decimal-pad"
           value={value}
           onChangeText={onChangeText}

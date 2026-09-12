@@ -1,14 +1,15 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   weekday: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#1a1a2e',
+    color: colors.textPrimary,
   },
   date: {
     fontSize: 13,
-    color: '#9a9a9a',
+    color: colors.textSecondary,
     marginTop: 2,
   },
 });

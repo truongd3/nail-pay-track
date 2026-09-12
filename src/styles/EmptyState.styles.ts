@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     alignItems: 'center',
     paddingTop: 60,
@@ -10,7 +11,7 @@ export const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: '#efece3',
+    backgroundColor: colors.divider,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
@@ -18,12 +19,12 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 17,
     fontWeight: '700',
-    color: '#1a1a2e',
+    color: colors.textPrimary,
     marginBottom: 6,
   },
   subtitle: {
     fontSize: 14,
-    color: '#9a9a9a',
+    color: colors.textSecondary,
     textAlign: 'center',
     lineHeight: 20,
   },

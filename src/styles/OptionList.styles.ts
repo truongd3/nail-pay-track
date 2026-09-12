@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   list: {
     flex: 1,
   },
@@ -8,18 +9,18 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     borderRadius: 14,
     padding: 16,
     marginBottom: 10,
   },
   rowSelected: {
     borderWidth: 2,
-    borderColor: '#5a9c6f',
+    borderColor: colors.accent,
   },
   label: {
     fontSize: 16,
-    color: '#1a1a2e',
+    color: colors.textPrimary,
   },
   labelSelected: {
     fontWeight: '700',

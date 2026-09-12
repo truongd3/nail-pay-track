@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -11,6 +12,6 @@ export const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#1a1a2e',
+    color: colors.textPrimary,
   },
 });

@@ -1,5 +1,6 @@
 import { View, Text } from 'react-native';
-import { styles } from '../styles/StatCard.styles';
+import { createStyles } from '../styles/StatCard.styles';
+import { useTheme } from '../theme/ThemeContext';
 
 interface StatCardProps {
   label: string;
@@ -8,6 +9,8 @@ interface StatCardProps {
 }
 
 export default function StatCard({ label, value, highlight }: StatCardProps) {
+  const colors = useTheme();
+  const styles = createStyles(colors);
   return (
     <View style={styles.statCard}>
       <Text style={styles.statLabel}>{label}</Text>

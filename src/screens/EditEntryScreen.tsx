@@ -9,7 +9,8 @@ import Button from '../components/Button';
 import CurrencyInput from '../components/CurrencyInput';
 import ScreenContainer from '../components/ScreenContainer';
 import { useEntryStore } from '../store/useEntryStore';
-import { styles } from '../styles/EditEntryScreen.styles';
+import { createStyles } from '../styles/EditEntryScreen.styles';
+import { useTheme } from '../theme/ThemeContext';
 
 type EditEntryNavProp = NativeStackNavigationProp<HistoryStackParamList, 'EditEntry'>;
 type EditEntryRouteProp = RouteProp<HistoryStackParamList, 'EditEntry'>;
@@ -26,6 +27,8 @@ function formatDateHeader(dateStr: string) {
 }
 
 export default function EditEntryScreen() {
+    const colors = useTheme();
+    const styles = createStyles(colors);
     const navigation = useNavigation<EditEntryNavProp>();
     const route = useRoute<EditEntryRouteProp>();
     const { entry } = route.params;
@@ -71,7 +74,7 @@ export default function EditEntryScreen() {
             <ScrollView contentContainerStyle={styles.content}>
                 <View style={styles.headerRow}>
                     <Pressable onPress={() => navigation.goBack()} hitSlop={8}>
-                        <Ionicons name="arrow-back" size={24} color="#1a1a2e" />
+                        <Ionicons name="arrow-back" size={24} color={colors.textPrimary} />
                     </Pressable>
                     <View style={styles.dateBlock}>
                         <Text style={styles.weekday}>{weekday}</Text>
@@ -91,7 +94,7 @@ export default function EditEntryScreen() {
                 <Button label="Cancel" onPress={handleCancel} variant="secondary" />
 
                 <Pressable style={styles.deleteLink} onPress={handleDelete}>
-                    <Ionicons name="trash-outline" size={16} color="#9a9a9a" />
+                    <Ionicons name="trash-outline" size={16} color={colors.textSecondary} />
                     <Text style={styles.deleteLinkText}>Delete Entry</Text>
                 </Pressable>
             </ScrollView>

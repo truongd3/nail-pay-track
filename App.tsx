@@ -11,6 +11,7 @@ import RootNavigator from './src/navigation/RootNavigator';
 import OnboardingScreen from './src/screens/OnboardingScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import { scheduleDailyReminder } from './src/utils/notifications';
+import { ThemeProvider } from './src/theme/ThemeContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -21,6 +22,7 @@ export default function App() {
     const loadSalon = useSalonStore((state) => state.loadSalon);
     const MIN_SPLASH_DURATION = 2000; // ms
     const loadSettings = useSettingsStore((state) => state.loadSettings);
+    const theme = useSettingsStore((state) => state.settings.theme);
 
     useEffect(() => {
         async function prepare() {
@@ -66,10 +68,12 @@ export default function App() {
 
     return (
         <SafeAreaProvider>
-            <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-                {renderScreen()}
-                <StatusBar style="dark" />
-            </View>
+            <ThemeProvider>
+                <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+                    {renderScreen()}
+                    <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
+                </View>
+            </ThemeProvider>
         </SafeAreaProvider>
     );
 }

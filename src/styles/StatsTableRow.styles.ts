@@ -1,16 +1,17 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   row: {
     flexDirection: 'row',
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#eeece5',
+    borderBottomColor: colors.divider,
   },
   cell: {
     flex: 1,
     fontSize: 14,
-    color: '#1a1a2e',
+    color: colors.textPrimary,
   },
   monthCell: {
     flex: 1.4,
@@ -19,6 +20,6 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
   },
   tipText: {
-    color: '#5a9c6f',
+    color: colors.accent,
   },
 });

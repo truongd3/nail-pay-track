@@ -1,16 +1,17 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   content: { paddingBottom: 40 },
   dateSelector: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     borderRadius: 16,
     padding: 18,
     marginBottom: 14,
   },
   dateLabel: {
     fontSize: 11,
-    color: '#9a9a9a',
+    color: colors.textSecondary,
     letterSpacing: 1,
     marginBottom: 8,
   },
@@ -22,6 +23,6 @@ export const styles = StyleSheet.create({
   dateValue: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1a1a2e',
+    color: colors.textPrimary,
   },
 });

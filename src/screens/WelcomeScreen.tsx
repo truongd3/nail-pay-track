@@ -1,13 +1,17 @@
 import { View, Text, Image } from 'react-native';
 import ScreenContainer from '../components/ScreenContainer';
 import Button from '../components/Button';
-import { styles } from '../styles/WelcomeScreen.styles';
+import { createStyles } from '../styles/WelcomeScreen.styles';
+import { useTheme } from '../theme/ThemeContext';
 
 interface WelcomeScreenProps {
     onGetStarted: () => void;
 }
 
 export default function WelcomeScreen({ onGetStarted }: WelcomeScreenProps) {
+    const colors = useTheme();
+    const styles = createStyles(colors);
+
     return (
         <ScreenContainer edges={['top', 'bottom']}>
             <View style={styles.content}>

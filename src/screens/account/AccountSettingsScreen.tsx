@@ -8,11 +8,14 @@ import SettingsSection from '../../components/SettingsSection';
 import SettingsRow from '../../components/SettingsRow';
 import SegmentedControl from '../../components/SegmentedControl';
 import { getAllEntries } from '../../db/database';
-import { styles } from '../../styles/AccountSettingsScreen.styles';
+import { createStyles } from '../../styles/AccountSettingsScreen.styles';
+import { useTheme } from '../../theme/ThemeContext';
 import { useSettingsStore } from '../../store/useSettingsStore';
 import { requestNotificationPermission, scheduleDailyReminder, cancelDailyReminder } from '../../utils/notifications';
 
 export default function AccountSettingsScreen() {
+    const colors = useTheme();
+    const styles = createStyles(colors);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const { settings, updateSettings } = useSettingsStore();
     // convert stored "HH:MM" string to a Date object for the picker
@@ -67,11 +70,11 @@ export default function AccountSettingsScreen() {
     const handleExport = async () => {
         const entries = getAllEntries();
         if (entries.length === 0) {
-            Alert.alert('Nothing to export', 'You have no entries yet.');
+            Alert.alert("Nothing to export", "You have no entries yet.");
             return;
         }
         const json = JSON.stringify(entries, null, 2);
-        await Share.share({ message: json, title: 'Nail Pay Track export' });
+        await Share.share({ message: json, title: "Nail Pay Track export" });
     };
 
     return (
@@ -81,7 +84,7 @@ export default function AccountSettingsScreen() {
 
                 <SettingsSection label="NOTIFICATIONS">
                     <SettingsRow label="DAILY REMINDER">
-                        <Switch value={settings.notifications} onValueChange={handleDailyReminderChange} trackColor={{ true: '#5a9c6f' }} />
+                        <Switch value={settings.notifications} onValueChange={handleDailyReminderChange} trackColor={{ true: colors.accent }} />
                     </SettingsRow>
 
                     {settings.notifications && (
@@ -93,7 +96,7 @@ export default function AccountSettingsScreen() {
                                     <>
                                         <Pressable style={styles.timeRow} onPress={() => setShowTimePicker(true)}>
                                             <Text style={styles.timeText}>{timeLabel}</Text>
-                                            <Ionicons name="time-outline" size={20} color="#1a1a2e" />
+                                            <Ionicons name="time-outline" size={20} color={colors.textPrimary} />
                                         </Pressable>
                                         {showTimePicker && (
                                             <DateTimePicker value={reminderTimeDate} mode="time" display="default" onValueChange={handleTimeChange} />
@@ -103,19 +106,14 @@ export default function AccountSettingsScreen() {
                             </SettingsRow>
 
                             <SettingsRow label="PHONE NOTIFICATION" divider>
-                                <Switch value={settings.phoneNotif} onValueChange={handlePhoneNotifChange} disabled={!settings.notifications} trackColor={{ true: '#5a9c6f' }} />
+                                <Switch value={settings.phoneNotif} onValueChange={handlePhoneNotifChange} disabled={!settings.notifications} trackColor={{ true: colors.accent }} />
                             </SettingsRow>
 
                             <SettingsRow label="EMAIL NOTIFICATION">
                                 <Switch
                                     value={false}
-                                    onValueChange={() =>
-                                        Alert.alert(
-                                            "Coming soon",
-                                            "Email reminders aren\'t available yet. For now, you can use phone notifications instead."
-                                        )
-                                    }
-                                    trackColor={{ true: '#5a9c6f' }}
+                                    onValueChange={() => Alert.alert("Coming soon", "Email reminders aren't available yet. For now, please use phone notifications instead.")}
+                                    trackColor={{ true: colors.accent }}
                                 />
                             </SettingsRow>
                         </>
@@ -138,7 +136,7 @@ export default function AccountSettingsScreen() {
                 <SettingsSection label="DATA">
                     <Pressable onPress={handleExport}>
                         <SettingsRow label="EXPORT MY DATA">
-                            <Ionicons name="share-outline" size={20} color="#5a9c6f" />
+                            <Ionicons name="share-outline" size={20} color={colors.accent} />
                         </SettingsRow>
                     </Pressable>
                 </SettingsSection>

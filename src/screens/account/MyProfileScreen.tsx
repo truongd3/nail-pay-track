@@ -14,7 +14,8 @@ import { useProfileStore } from '../../store/useProfileStore';
 import { getInitials } from '../../utils/initials';
 import { US_STATES, CA_PROVINCES } from '../../data/regions';
 import { Country } from '../../types/profile';
-import { styles } from '../../styles/MyProfileScreen.styles';
+import { createStyles } from '../../styles/MyProfileScreen.styles';
+import { useTheme } from '../../theme/ThemeContext';
 
 async function persistAvatarImage(uri: string): Promise<string> {
     const filename = `avatar_${Date.now()}.jpg`;
@@ -24,6 +25,8 @@ async function persistAvatarImage(uri: string): Promise<string> {
 }
 
 export default function MyProfileScreen() {
+    const colors = useTheme();
+    const styles = createStyles(colors);
     const navigation = useNavigation<any>();
     const { profile, saveProfile } = useProfileStore();
 
@@ -54,11 +57,11 @@ export default function MyProfileScreen() {
 
     const handleSave = () => {
         if (!name.trim() || !email.trim() || !phone.trim()) {
-            Alert.alert('Missing information', 'Name, email, and phone are required.');
+            Alert.alert("Missing information", "Name, email, and phone are required.");
             return;
         }
         if (!region) {
-            Alert.alert('Missing information', 'Please select your state/province.');
+            Alert.alert("Missing information", "Please select your state/province.");
             return;
         }
         saveProfile({ name, email, phone, country, region, avatarUri });
@@ -121,7 +124,7 @@ export default function MyProfileScreen() {
                 <Text style={styles.regionLabel}>COUNTRY</Text>
                 <View style={styles.regionValueRow}>
                     <Text style={styles.regionValue}>{country === 'CA' ? 'Canada' : 'United States'}</Text>
-                    <Ionicons name="chevron-forward" size={18} color="#9a9a9a" />
+                    <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
                 </View>
             </Pressable>
             
@@ -129,7 +132,7 @@ export default function MyProfileScreen() {
                 <Text style={styles.regionLabel}>{country === 'CA' ? 'PROVINCE' : 'STATE'}</Text>
                 <View style={styles.regionValueRow}>
                     <Text style={styles.regionValue}>{regionLabel}</Text>
-                    <Ionicons name="chevron-forward" size={18} color="#9a9a9a" />
+                    <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
                 </View>
             </Pressable>
 

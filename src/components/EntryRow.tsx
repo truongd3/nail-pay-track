@@ -3,7 +3,8 @@ import AmountCard from './AmountCard';
 import DateBadge from './DateBadge';
 import DateCard from './DateCard';
 import DeleteButton from './DeleteButton';
-import { styles } from '../styles/EntryRow.styles';
+import { createStyles } from '../styles/EntryRow.styles';
+import { useTheme } from '../theme/ThemeContext';
 import { Entry } from '../types/entry';
 
 interface EntryRowProps {
@@ -26,6 +27,8 @@ function formatDayLabel(dateStr: string) {
 }
 
 export default function EntryRow({ entry, onDelete, onPress }: EntryRowProps) {
+    const colors = useTheme();
+    const styles = createStyles(colors);
     const { weekday, dayAbbrev, dayNumber, monthDay } = formatDayLabel(entry.date);
 
     return (

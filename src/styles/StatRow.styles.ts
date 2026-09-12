@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   statsRow: {
     flexDirection: 'row',
     gap: 12,

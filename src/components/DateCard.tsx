@@ -1,5 +1,6 @@
 import { View, Text } from 'react-native';
-import { styles } from '../styles/DateCard.styles';
+import { createStyles } from '../styles/DateCard.styles';
+import { useTheme } from '../theme/ThemeContext';
 
 interface DateCardProps {
   weekday: string;
@@ -7,6 +8,9 @@ interface DateCardProps {
 }
 
 export default function DateCard({ weekday, monthDay }: DateCardProps) {
+  const colors = useTheme();
+  const styles = createStyles(colors);
+
   return (
     <View>
       <Text style={styles.weekday}>{weekday}</Text>

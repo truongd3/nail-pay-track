@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     borderRadius: 20,
     padding: 14,
     marginBottom: 12,
@@ -12,8 +13,5 @@ export const styles = StyleSheet.create({
   },
   middle: {
     flex: 1,
-  },
-  deleteButton: {
-    paddingLeft: 8,
   },
 });

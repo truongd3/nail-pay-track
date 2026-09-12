@@ -6,9 +6,12 @@ import Avatar from '../../components/Avatar';
 import MenuRow from '../../components/MenuRow';
 import { useProfileStore } from '../../store/useProfileStore';
 import { getInitials } from '../../utils/initials';
-import { styles } from '../../styles/AccountMenuScreen.styles';
+import { createStyles } from '../../styles/AccountMenuScreen.styles';
+import { useTheme } from '../../theme/ThemeContext';
 
 export default function AccountMenuScreen() {
+    const colors = useTheme();
+    const styles = createStyles(colors);
     const navigation = useNavigation<any>();
     const profile = useProfileStore((state) => state.profile);
 
@@ -17,7 +20,7 @@ export default function AccountMenuScreen() {
             <View style={styles.header}>
                 <Text style={styles.title}>Account</Text>
                 <Pressable onPress={() => navigation.goBack()} hitSlop={8}>
-                <Ionicons name="close" size={26} color="#1a1a2e" />
+                <Ionicons name="close" size={26} color={colors.textPrimary} />
                 </Pressable>
             </View>
 
