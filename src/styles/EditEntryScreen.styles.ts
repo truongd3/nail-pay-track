@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   content: {
     paddingTop: 10,
     paddingBottom: 40,
@@ -16,31 +17,31 @@ export const styles = StyleSheet.create({
   },
   weekday: {
     fontSize: 12,
-    color: '#9a9a9a',
+    color: colors.textSecondary,
     letterSpacing: 1,
     marginBottom: 4,
   },
   monthDay: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#1a1a2e',
+    color: colors.textPrimary,
   },
   wageCard: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     borderRadius: 16,
     padding: 18,
     marginBottom: 20,
   },
   wageLabel: {
     fontSize: 11,
-    color: '#9a9a9a',
+    color: colors.textSecondary,
     letterSpacing: 1,
     marginBottom: 8,
   },
   wageValue: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#1a1a2e',
+    color: colors.textPrimary,
   },
 
   deleteLink: {
@@ -51,7 +52,7 @@ export const styles = StyleSheet.create({
   },
   deleteLinkText: {
     fontSize: 15,
-    color: '#9a9a9a',
+    color: colors.textSecondary,
     fontWeight: '600',
   },
 });

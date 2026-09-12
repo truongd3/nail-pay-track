@@ -1,15 +1,16 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   label: {
     fontSize: 12,
-    color: '#9a9a9a',
+    color: colors.textSecondary,
     letterSpacing: 1,
     marginBottom: 4,
   },
   title: {
     fontSize: 30,
     fontWeight: '700',
-    color: '#1a1a2e',
+    color: colors.textPrimary,
   },
 });

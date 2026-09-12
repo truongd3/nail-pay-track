@@ -1,8 +1,9 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   inputCard: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     borderRadius: 16,
     padding: 18,
     marginBottom: 14,
@@ -14,7 +15,7 @@ export const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 11,
-    color: '#9a9a9a',
+    color: colors.textSecondary,
     letterSpacing: 1,
     marginBottom: 8,
   },
@@ -24,13 +25,13 @@ export const styles = StyleSheet.create({
   },
   dollarSign: {
     fontSize: 28,
-    color: '#333',
+    color: colors.textSecondary,
     marginRight: 6,
   },
   input: {
     flex: 1,
     fontSize: 28,
-    color: '#1a1a2e',
+    color: colors.textPrimary,
     padding: 0,
   },
 });

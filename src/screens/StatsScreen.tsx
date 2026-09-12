@@ -16,7 +16,8 @@ import { useSalonStore } from '../store/useSalonStore';
 import { getInitials } from '../utils/initials';
 import { reconcileTips } from '../utils/tipReconciliation';
 import { calculateWageExcludingTip } from '../utils/wage';
-import { styles } from '../styles/StatsScreen.styles';
+import { createStyles } from '../styles/StatsScreen.styles';
+import { useTheme } from '../theme/ThemeContext';
 
 function formatMonthLabel(monthKey: string) {
     const [year, month] = monthKey.split('-');
@@ -25,6 +26,8 @@ function formatMonthLabel(monthKey: string) {
 }
 
 export default function StatsScreen() {
+    const colors = useTheme();
+    const styles = createStyles(colors);
     const [monthlyStats, setMonthlyStats] = useState<MonthlyStat[]>([]);
     const profile = useProfileStore((state) => state.profile);
     const splitPercent = useSalonStore((state) => state.salon?.splitPercent ?? 100);

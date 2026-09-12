@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   statCard: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     borderRadius: 16,
     padding: 16,
     shadowColor: '#000',
@@ -14,16 +15,16 @@ export const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 11,
-    color: '#9a9a9a',
+    color: colors.textSecondary,
     letterSpacing: 1,
     marginBottom: 6,
   },
   statValue: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#1a1a2e',
+    color: colors.textPrimary,
   },
   highlightValue: {
-    color: '#5a9c6f',
+    color: colors.accent,
   },
 });

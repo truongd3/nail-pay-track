@@ -1,16 +1,25 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     borderRadius: 14,
     paddingVertical: 16,
     paddingHorizontal: 16,
     marginBottom: 10,
   },
-  left: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  label: { fontSize: 16, color: '#1a1a2e', fontWeight: '600' },
+  left: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    gap: 12 
+  },
+  label: { 
+    fontSize: 16, 
+    color: colors.textPrimary,
+    fontWeight: '600' 
+  },
 });

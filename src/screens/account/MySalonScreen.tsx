@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { View, Text } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import BackHeader from '../../components/BackHeader';
 import KeyboardFormScreen from '../../components/KeyboardFormScreen';
 import LabeledInput from '../../components/LabeledInput';
 import Button from '../../components/Button';
 import { useSalonStore } from '../../store/useSalonStore';
-import { styles } from '../../styles/MySalonScreen.styles';
+import { createStyles } from '../../styles/MySalonScreen.styles';
+import { useTheme } from '../../theme/ThemeContext';
 
 export default function MySalonScreen() {
+    const colors = useTheme();
+    const styles = createStyles(colors);
     const navigation = useNavigation<any>();
     const { salon, saveSalon } = useSalonStore();
     const [name, setName] = useState(salon?.name ?? '');
@@ -28,11 +30,8 @@ export default function MySalonScreen() {
             <LabeledInput label="SALON NAME" value={name} onChangeText={setName} placeholder="Luxe Nails & Spa" />
             <LabeledInput label="ADDRESS" value={address} onChangeText={setAddress} placeholder="123 Main St, City" />
             <LabeledInput
-                label="YOUR SPLIT (%)"
-                value={splitPercent}
-                onChangeText={setSplitPercent}
-                placeholder="60"
-                keyboardType="decimal-pad"
+                label="YOUR SPLIT (%)" value={splitPercent} onChangeText={setSplitPercent}
+                placeholder="60" keyboardType="decimal-pad"
             />
             <Text style={styles.hint}>The percentage of service revenue you keep — the rest goes to the salon.</Text>
 

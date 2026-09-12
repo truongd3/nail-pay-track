@@ -1,38 +1,40 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   content: {
     flex: 1,
     paddingTop: 20,
+    paddingBottom: 20
   },
   stepTitle: {
     fontSize: 32,
     fontWeight: '700',
-    color: '#1a1a2e',
+    color: colors.textPrimary,
     marginBottom: 8,
   },
   stepSubtitle: {
     fontSize: 14,
-    color: '#9a9a9a',
+    color: colors.textSecondary,
     marginBottom: 24,
   },
   avatarPreviewWrap: {
-  alignItems: 'center',
-  marginTop: 40,
-  marginBottom: 20,
-},
+    alignItems: 'center',
+    marginTop: 40,
+    marginBottom: 20,
+  },
   avatarCircle: {
     width: 140,
     height: 140,
     borderRadius: 70,
-    backgroundColor: '#e3ecE6',
+    backgroundColor: colors.accentSoft,
     alignItems: 'center',
     justifyContent: 'center',
   },
   avatarInitials: {
     fontSize: 36,
     fontWeight: '700',
-    color: '#5a9c6f',
+    color: colors.accent,
   },
   avatarImage: {
     width: 140,
@@ -41,7 +43,7 @@ export const styles = StyleSheet.create({
   },
   uploadButton: {
     alignSelf: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     borderRadius: 24,
     paddingVertical: 14,
     paddingHorizontal: 28,
@@ -49,7 +51,7 @@ export const styles = StyleSheet.create({
   uploadButtonText: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#1a1a2e',
+    color: colors.textPrimary,
   },
   buttonRow: {
     marginTop: 'auto',
@@ -58,7 +60,7 @@ export const styles = StyleSheet.create({
 
   stepHint: {
     fontSize: 13,
-    color: '#9a9a9a',
+    color: colors.textSecondary,
     marginTop: -8,
     marginBottom: 10,
     lineHeight: 18,

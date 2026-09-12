@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   content: { paddingBottom: 40 },
   timeRow: {
     flexDirection: 'row',
@@ -10,6 +11,6 @@ export const styles = StyleSheet.create({
   timeText: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#1a1a2e',
+    color: colors.textPrimary,
   },
 });

@@ -1,5 +1,6 @@
 import { View, Text } from 'react-native';
-import { styles } from '../styles/SettingsRow.styles';
+import { createStyles } from '../styles/SettingsRow.styles';
+import { useTheme } from '../theme/ThemeContext';
 
 interface SettingsRowProps {
     label: string;
@@ -8,6 +9,9 @@ interface SettingsRowProps {
 }
 
 export default function SettingsRow({ label, children, divider }: SettingsRowProps) {
+    const colors = useTheme();
+    const styles = createStyles(colors);
+
     return (
         <View style={[styles.row, divider && styles.rowDivider]}>
             <Text style={styles.label}>{label}</Text>

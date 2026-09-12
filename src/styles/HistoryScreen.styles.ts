@@ -1,12 +1,7 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#faf8f3',
-    paddingHorizontal: 20,
-    paddingTop: 10,
-  },
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',

@@ -1,5 +1,6 @@
 import { View, Text, Pressable } from 'react-native';
-import { styles } from '../styles/SegmentedControl.styles';
+import { createStyles } from '../styles/SegmentedControl.styles';
+import { useTheme } from '../theme/ThemeContext';
 
 interface Option {
     label: string;
@@ -13,6 +14,9 @@ interface SegmentedControlProps {
 }
 
 export default function SegmentedControl({ options, selectedValue, onSelect }: SegmentedControlProps) {
+    const colors = useTheme();
+    const styles = createStyles(colors);
+    
     return (
         <View style={styles.row}>
             {options.map((option) => {

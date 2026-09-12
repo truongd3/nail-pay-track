@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   content: {
     flex: 1,
     paddingTop: 100,
@@ -8,7 +9,7 @@ export const styles = StyleSheet.create({
   welcomeLabel: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#5a9c6f',
+    color: colors.accent,
     letterSpacing: 2,
     textAlign: 'center',
     marginBottom: 16,
@@ -26,7 +27,7 @@ export const styles = StyleSheet.create({
   },
   description: {
     fontSize: 16,
-    color: '#5a5a5a',
+    color: colors.textMuted,
     textAlign: 'center',
     lineHeight: 24,
     marginTop: 28,
@@ -38,7 +39,7 @@ export const styles = StyleSheet.create({
   setupNote: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#9a9a9a',
+    color: colors.textSecondary,
     letterSpacing: 1,
     textAlign: 'center',
     marginBottom: 12,

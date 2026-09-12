@@ -1,5 +1,6 @@
 import { View, Text } from 'react-native';
-import { styles } from '../styles/SettingsSection.styles';
+import { createStyles } from '../styles/SettingsSection.styles';
+import { useTheme } from '../theme/ThemeContext';
 
 interface SettingsSectionProps {
     label: string;
@@ -7,6 +8,9 @@ interface SettingsSectionProps {
 }
 
 export default function SettingsSection({ label, children }: SettingsSectionProps) {
+    const colors = useTheme();
+    const styles = createStyles(colors);
+
     return (
         <View style={styles.section}>
             <Text style={styles.label}>{label}</Text>

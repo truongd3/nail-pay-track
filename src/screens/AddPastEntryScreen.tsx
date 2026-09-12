@@ -10,9 +10,12 @@ import Button from '../components/Button';
 import { useEntryStore } from '../store/useEntryStore';
 import { getEntryByDate } from '../db/database';
 import { toLocalDateString } from '../utils/date';
-import { styles } from '../styles/AddPastEntryScreen.styles';
+import { createStyles } from '../styles/AddPastEntryScreen.styles';
+import { useTheme } from '../theme/ThemeContext';
 
 export default function AddPastEntryScreen() {
+    const colors = useTheme();
+    const styles = createStyles(colors);
     const navigation = useNavigation<any>();
     const addEntryForDate = useEntryStore((state) => state.addEntryForDate);
 
@@ -46,7 +49,7 @@ export default function AddPastEntryScreen() {
         const existing = getEntryByDate(dateString);
         if (existing) {
             Alert.alert(
-                'Entry already exists',
+                "Entry already exists",
                 `You already logged ${displayDate}. Go to History and tap that entry to edit it instead.`
             );
             return;
@@ -64,7 +67,7 @@ export default function AddPastEntryScreen() {
                 <Text style={styles.dateLabel}>DATE</Text>
                 <View style={styles.dateValueRow}>
                     <Text style={styles.dateValue}>{displayDate}</Text>
-                    <Ionicons name="calendar-outline" size={20} color="#9a9a9a" />
+                    <Ionicons name="calendar-outline" size={20} color={colors.textSecondary} />
                 </View>
             </Pressable>
 
@@ -72,7 +75,7 @@ export default function AddPastEntryScreen() {
                 <DateTimePicker
                     value={date} mode="date"
                     display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                    maximumDate={new Date()} onChange={handleDateChange}
+                    maximumDate={new Date()} onValueChange={handleDateChange}
                 />
             )}
 

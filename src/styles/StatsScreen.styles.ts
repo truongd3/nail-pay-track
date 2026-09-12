@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#faf8f3',
+    backgroundColor: colors.background,
     paddingHorizontal: 20,
     paddingTop: 10,
   },
@@ -16,7 +17,7 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 17,
     fontWeight: '700',
-    color: '#1a1a2e',
+    color: colors.textPrimary,
     marginTop: 0,
     marginBottom: 12,
   },

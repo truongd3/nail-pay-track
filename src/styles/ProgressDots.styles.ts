@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -12,10 +13,10 @@ export const styles = StyleSheet.create({
     width: 8,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#e5e2d9',
+    backgroundColor: colors.border,
   },
   dotActive: {
-    backgroundColor: '#5a9c6f',
+    backgroundColor: colors.accent,
     width: 24,
   },
 });

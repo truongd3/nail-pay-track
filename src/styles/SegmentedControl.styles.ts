@@ -1,27 +1,28 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   row: {
     flexDirection: 'row',
     gap: 8,
   },
   segment: {
     borderWidth: 1.5,
-    borderColor: '#e5e2d9',
+    borderColor: colors.border,
     borderRadius: 20,
     paddingVertical: 8,
     paddingHorizontal: 18,
   },
   segmentSelected: {
-    borderColor: '#5a9c6f',
-    backgroundColor: '#eaf3ec',
+    borderColor: colors.accent,
+    backgroundColor: colors.accentSoft,
   },
   segmentText: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#5a5a5a',
+    color: colors.textMuted,
   },
   segmentTextSelected: {
-    color: '#5a9c6f',
+    color: colors.accent,
   },
 });

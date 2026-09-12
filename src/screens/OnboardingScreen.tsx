@@ -11,7 +11,8 @@ import { US_STATES, CA_PROVINCES } from '../data/regions';
 import { useProfileStore } from '../store/useProfileStore';
 import { useSalonStore } from '../store/useSalonStore';
 import { Country } from '../types/profile';
-import { styles } from '../styles/OnboardingScreen.styles';
+import { createStyles } from '../styles/OnboardingScreen.styles';
+import { useTheme } from '../theme/ThemeContext';
 import { getInitials } from '../utils/initials';
 
 const TOTAL_STEPS = 5;
@@ -24,6 +25,8 @@ async function persistAvatarImage(uri: string): Promise<string> {
 }
 
 export default function OnboardingScreen() {
+    const colors = useTheme();
+    const styles = createStyles(colors);
     const saveProfile = useProfileStore((state) => state.saveProfile);
     const saveSalon = useSalonStore((state) => state.saveSalon);
 
@@ -58,7 +61,7 @@ export default function OnboardingScreen() {
     const handlePickAvatar = async () => {
         const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (!permission.granted) {
-            Alert.alert('Permission needed', 'Allow photo access to set a profile picture.');
+            Alert.alert("Permission needed", "Allow photo access to set a profile picture.");
             return;
         }
         const result = await ImagePicker.launchImageLibraryAsync({

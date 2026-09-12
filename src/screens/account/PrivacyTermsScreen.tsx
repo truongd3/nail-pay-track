@@ -2,9 +2,13 @@ import { View, Text, Pressable, ScrollView } from 'react-native';
 import BackHeader from '../../components/BackHeader';
 import ScreenContainer from '../../components/ScreenContainer';
 import { PRIVACY_POLICY, TERMS_OF_SERVICE } from '../../data/legal';
-import { styles } from '../../styles/StaticContentScreen.styles';
+import { createStyles } from '../../styles/StaticContentScreen.styles';
+import { useTheme } from '../../theme/ThemeContext';
 
 export default function PrivacyTermsScreen() {
+    const colors = useTheme();
+    const styles = createStyles(colors);
+
     return (
         <ScreenContainer edges={['top', 'bottom']}>
             <ScrollView contentContainerStyle={styles.content}>

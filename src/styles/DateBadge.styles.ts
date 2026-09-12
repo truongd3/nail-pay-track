@@ -1,23 +1,24 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   badge: {
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#efece3',
+    backgroundColor: colors.divider,
     alignItems: 'center',
     justifyContent: 'center',
   },
   dayAbbrev: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#9a9a9a',
+    color: colors.textSecondary,
     letterSpacing: 0.5,
   },
   dayNumber: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1a1a2e',
+    color: colors.textPrimary,
   },
 });

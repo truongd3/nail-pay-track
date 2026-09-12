@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -10,12 +11,12 @@ export const styles = StyleSheet.create({
   },
   rowDivider: {
     borderTopWidth: 1,
-    borderTopColor: '#f0ede4',
+    borderTopColor: colors.divider,
   },
   label: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#5a5a5a',
+    color: colors.textMuted,
     letterSpacing: 0.5,
   },
 });

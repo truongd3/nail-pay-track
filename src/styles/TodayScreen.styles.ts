@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { ThemeColors } from '../theme/colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
   content: {
     paddingTop: 10,
     paddingBottom: 40,
   },
-
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -13,48 +13,12 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20,
   },
-  avatarPlaceholder: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#e8e6e0',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  avatarPlaceholderText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#555',
-  },
-  
+
   monthLabel: {
     fontSize: 12,
-    color: '#9a9a9a',
+    color: colors.textSecondary,
     letterSpacing: 1,
     marginBottom: 4,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: '700',
-    color: '#1a1a2e',
-  },
-
-  saveButton: {
-    backgroundColor: '#5a9c6f',
-    borderRadius: 16,
-    paddingVertical: 18,
-    alignItems: 'center',
-    marginBottom: 20,
-    shadowColor: '#5a9c6f',
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 2,
-  },
-  saveButtonText: {
-    color: '#fff',
-    fontSize: 17,
-    fontWeight: '600',
   },
 
   activityHeader: {
@@ -66,29 +30,19 @@ export const styles = StyleSheet.create({
   activityTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#1a1a2e',
+    color: colors.textPrimary,
   },
   activityCount: {
     fontSize: 13,
-    color: '#5a9c6f',
+    color: colors.accent,
   },
   entryRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     borderRadius: 14,
     padding: 16,
     marginBottom: 10,
-  },
-  entryWeekday: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#1a1a2e',
-  },
-  entryDate: {
-    fontSize: 13,
-    color: '#9a9a9a',
-    marginTop: 2,
   },
 });

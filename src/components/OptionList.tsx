@@ -1,6 +1,7 @@
 import { View, Text, Pressable, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { styles } from '../styles/OptionList.styles';
+import { createStyles } from '../styles/OptionList.styles';
+import { useTheme } from '../theme/ThemeContext';
 
 interface Option {
     label: string;
@@ -14,6 +15,9 @@ interface OptionListProps {
 }
 
 export default function OptionList({ options, selectedValue, onSelect }: OptionListProps) {
+    const colors = useTheme();
+    const styles = createStyles(colors);
+
     return (
         <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
             {options.map((option) => {
@@ -25,7 +29,7 @@ export default function OptionList({ options, selectedValue, onSelect }: OptionL
                         onPress={() => onSelect(option.value)}
                     >
                         <Text style={[styles.label, isSelected && styles.labelSelected]}>{option.label}</Text>
-                        {isSelected && <Ionicons name="checkmark-circle" size={20} color="#5a9c6f" />}
+                        {isSelected && <Ionicons name="checkmark-circle" size={20} color={colors.accent} />}
                     </Pressable>
                 );
             })}
