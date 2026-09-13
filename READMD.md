@@ -55,9 +55,41 @@ This app is that same idea, rebuilt from scratch as a real mobile app — design
 <sub>Today entry (light mode)</sub>
 </p>
 
-## Status
+## How to Get This App
+ 
+This app isn't on the App Store yet, so getting it on your phone takes a few extra steps the first time.
+ 
+### Step 1: Install "Expo Go" from App Store
+ 
+1. Open **App Store** on iPhone
+2. Search "**Expo Go**" and finish free installation
 
-This is a personal project, currently shared directly with a small group of testers (not published on the App Store). Cloud backup/sync across devices is a planned future addition, along with email reminders — both are intentionally deferred until there's real demand, since they require ongoing backend hosting costs.
+### Step 2: Create a free Expo account
+ 
+1. Open the **Expo Go** app you just installed
+2. Tap **Sign Up** (not "Log In," since you don't have an account yet)
+3. Enter your email address and create a password
+4. Check your email for a confirmation message from Expo and follow to confirm your account
+5. Once confirmed, go back to the Expo Go app and log in
+
+### Step 3: Fill out this quick form
+ 
+So I can invite you to use the app, I need your name and the **same email address** you just used to sign up for Expo. Please fill out this short form:
+ 
+👉 **[Google Form link](https://www.linkedin.com/in/2dt)**
+ 
+### Step 4: Wait for your invite email
+ 
+Once I receive your submission, I'll send you an invitation by email to join the project. This usually only takes me a day or so. Look out for an email from **Expo** with an invitation link, and tap **Accept**.
+ 
+_(If you don't see it, check your spam/junk folder.)_
+ 
+### Step 5: Open the app
+ 
+1. Once you've accepted the invite, I'll send you a link and a QR code to open the app
+    - If receive a **link**: tap it on iPhone, and it should open automatically inside Expo Go
+    - If receive a **QR code**: open the Expo Go app, tap **Scan QR Code**, and point your camera at the code
+2. The app should load — the first time might take a minute, that's normal
 
 ## Tech Stack
 
